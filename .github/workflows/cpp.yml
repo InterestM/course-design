@@ -10,7 +10,7 @@ env:
 
 jobs:
   build_linux:
-    name: Build On Linux
+    name: Build on Linux
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
