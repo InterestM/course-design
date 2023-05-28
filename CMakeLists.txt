@@ -1,4 +1,6 @@
 cmake_minimum_required(VERSION 3.2)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_EXPORT_COMPILE_COMMANDS True)
 
 # --- Fetch FTXUI --------------------------------------------------------------
 include(FetchContent)
@@ -16,7 +18,6 @@ endif()
  
 # ------------------------------------------------------------------------------
 
-set(CMAKE_CXX_STANDARD 17)
 
 project(hello_world)
 
@@ -33,4 +34,3 @@ target_link_libraries(${PROJECT_NAME}
   PRIVATE ftxui::component
 )
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS True)

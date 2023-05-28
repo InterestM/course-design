@@ -7,13 +7,6 @@ int main(int argc, char *argv[]) {
   using namespace ftxui;
   auto screen = ScreenInteractive::Fullscreen();
   int shift = 0;
-  auto main_renderer = Renderer(main_container, [&] {
-    return vbox({
-        text("FTXUI Demo") | bold | hcenter,
-        tab_selection->Render(),
-        tab_content->Render() | flex,
-    });
-  });
 
   std::atomic<bool> refresh_ui_continue = true;
   std::thread refresh_ui([&] {
