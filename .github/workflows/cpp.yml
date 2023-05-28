@@ -1,0 +1,23 @@
+name: Cpp
+on:
+  push:
+  pull_request:
+    branches:
+      - main
+
+env:
+  TARGET: hello_world
+
+jobs:
+  build_linux:
+    name: Build on Linux
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Make Build
+        run: make build
+      - name: Archive Build Target
+        uses: actions/upload-artifact@v3
+        with:
+          name: Build
+          path: build/${{ env.TARGET }}
