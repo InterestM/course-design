@@ -3,7 +3,7 @@ Course Design
 
 one CUC student's course design
 
-#Build instructions:
+# Build instructions:
 ~~~bash
 mkdir build
 cd build
