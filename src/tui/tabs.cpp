@@ -4,7 +4,7 @@
 
 #include "mainTab.cpp"
 using namespace ftxui;
-int tab_index = 0;
+int tab_index = -1;
 
 std::vector<std::string> tab_entries = {
     "Main", "empty", "empty", "empty", "empty", "Help",
