@@ -8,8 +8,6 @@ one CUC student's course design
 mkdir build
 cd build
 cmake ..
-make -j
-cd ../target
-./ftxui-starter
+./hello_world
 ~~~
 
