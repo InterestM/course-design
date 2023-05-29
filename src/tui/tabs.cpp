@@ -1,7 +1,6 @@
 #include <chrono> // for operator""ms, literals
 #include <vector> // for vector
 
-#include "ftxui/component/animation.hpp"         // for BackOut, Duration
 #include "ftxui/component/component.hpp"         // for Menu, Renderer, Vertical
 #include "ftxui/component/component_options.hpp" // for MenuOption, UnderlineOption
 #include "ftxui/screen/color.hpp" // for Color, Color::Blue, Color::Red
@@ -11,7 +10,7 @@ using namespace ftxui;
 int tab_index = 0;
 
 std::vector<std::string> tab_entries = {
-    "Main", "empty", "empty", "empty", "empty", "Help",
+    "Main", "empty", "empty", "empty", "empty", "Settings",
 };
 
 // should be customizable
@@ -42,7 +41,7 @@ auto main_container = Container::Vertical({
 
 auto main_renderer = Renderer(main_container, [] {
   return vbox({
-      text("Demo 测试中") | bold | hcenter,
+      text("武装冲突装备损失开源信息管理系统") | bold | hcenter,
       tab_selection->Render(),
       tab_content->Render() | flex,
   });
