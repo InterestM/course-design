@@ -1,3 +1,4 @@
+#include <ftxui/dom/elements.hpp>
 #include <thread> // for sleep_for, thread
 
 #include "ftxui/component/component.hpp" // for Checkbox, Renderer, Horizontal, Vertical, Input, Menu, Radiobox, ResizableSplitLeft, Tab
@@ -23,7 +24,7 @@ int main(int argc, char *argv[]) {
     }
   });
 
-  screen.Loop(main_renderer);
+  screen.Loop(main_renderer | bgcolor(Color::Black));
   refresh_ui_continue = false;
   refresh_ui.join();
 

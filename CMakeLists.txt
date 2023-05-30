@@ -21,7 +21,7 @@ endif()
 
 project(hello_world)
 
-set(SRC_LIST src/tui/main.cpp)
+set(SRC_LIST src/tui/option/options.cpp src/tui/main.cpp )
 #aux_source_directory(src/tui/ SRC_LIST)
 
 add_executable(${PROJECT_NAME} ${SRC_LIST})

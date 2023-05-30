@@ -3,15 +3,16 @@
 #include <ftxui/component/component_base.hpp>
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/dom/node.hpp>
+
 using namespace ftxui;
 
-auto mainTab = Renderer([] {
+Component homescreen = Renderer([] {
   auto tank = hbox({
       vbox({
           text("░░░░░░███████ ]▄▄▄▄▄▄▄▄▃"),
           text("▂▄▅█████████▅▄▃▂"),
           text("I███████████████████]."),
-          text("◥⊙▲⊙▲⊙▲⊙▲⊙▲⊙▲⊙◤..."),
+          text("◥⊙ ▲⊙ ▲⊙ ▲⊙ ▲⊙ ▲⊙ ▲⊙◤..."),
       }),
   });
 
