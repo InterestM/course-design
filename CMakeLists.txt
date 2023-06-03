@@ -17,6 +17,13 @@ if(NOT ftxui_POPULATED)
 endif()
  
 # ------------------------------------------------------------------------------
+# --- Fetch SQLiteC++ ----------------------------------------------------------
+FetchContent_Declare(SQLiteCpp
+  GIT_REPOSITORY https://github.com/SRombauts/SQLiteCpp
+  GIT_TAG 3.3.0
+)
+FetchContent_MakeAvailable(SQLiteCpp)
+# ------------------------------------------------------------------------------
 
 
 project(hello_world)
@@ -32,5 +39,6 @@ target_link_libraries(${PROJECT_NAME}
   PRIVATE ftxui::screen
   PRIVATE ftxui::dom
   PRIVATE ftxui::component
+  SQLiteCpp
 )
 
