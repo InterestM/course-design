@@ -7,6 +7,7 @@ on:
 
 env:
   TARGET: hello_world
+  CONFIG: Release
 
 jobs:
   build_linux:
@@ -19,5 +20,31 @@ jobs:
       - name: Archive Build Target
         uses: actions/upload-artifact@v3
         with:
-          name: Build
+          name: build_linux_x86_64
           path: build/${{ env.TARGET }}
+
+  build_windows_msvc:
+    name: Build on Windows (MSVC)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Make Build
+        run: make build
+      - name: Archive Build Target
+        uses: actions/upload-artifact@v3
+        with:
+          name: build_windows_x86_64_msvc
+          path: build\${{ env.CONFIG }}\${{ env.TARGET }}.exe
+
+  build_windows_mingw:
+    name: Build on Windows (MinGW)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Make Build
+        run: make build MINGW=1
+      - name: Archive Build Target
+        uses: actions/upload-artifact@v3
+        with:
+          name: build_windows_x86_64_mingw
+          path: build\${{ env.TARGET }}.exe
