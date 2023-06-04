@@ -9,7 +9,7 @@
 using namespace ftxui;
 int count = 0;
 auto buttons = Container::Horizontal({
-    Button("打开标签延时效果 但是现在没有用",
+    Button("test",
            [] {
              option.delay_on();
              count++;

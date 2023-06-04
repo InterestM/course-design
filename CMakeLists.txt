@@ -28,7 +28,7 @@ FetchContent_MakeAvailable(SQLiteCpp)
 
 project(hello_world)
 
-set(SRC_LIST src/tui/option/options.cpp src/tui/main.cpp )
+set(SRC_LIST src/tui/option/options.cpp src/tui/main.cpp src/data/operate.cpp)
 #aux_source_directory(src/tui/ SRC_LIST)
 
 add_executable(${PROJECT_NAME} ${SRC_LIST})

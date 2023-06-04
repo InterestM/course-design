@@ -13,7 +13,10 @@ using namespace ftxui;
 int tab_index = 0;
 
 std::vector<std::string> tab_entries = {
-    "Main", "empty", "empty", "empty", "empty", "Settings",
+    "主界面",
+    "查询",
+    "管理",
+    "设置",
 };
 auto tab_selection = Menu(&tab_entries, &tab_index, option.option);
 auto tab_content = Container::Tab(
