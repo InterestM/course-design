@@ -34,7 +34,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: build_windows_x86_64_msvc
-          path: build\${{ env.CONFIG }}\${{ env.TARGET }}.exe
+          path: build\${{ env.TARGET }}.exe
 
   build_windows_mingw:
     name: Build on Windows (MinGW)
