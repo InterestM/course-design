@@ -35,3 +35,16 @@ jobs:
         with:
           name: Build
           path: build\${{ env.CONFIG }}\${{ env.TARGET }}.exe
+
+  build_windows_mingw:
+    name: Build on Windows (MinGW)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Make Build
+        run: make build MINGW=1
+      - name: Archive Build Target
+        uses: actions/upload-artifact@v3
+        with:
+          name: Build
+          path: build\${{ env.TARGET }}.exe
