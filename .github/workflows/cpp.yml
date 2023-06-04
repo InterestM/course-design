@@ -7,6 +7,7 @@ on:
 
 env:
   TARGET: hello_world
+  CONFIG: Release
 
 jobs:
   build_linux:
@@ -21,3 +22,16 @@ jobs:
         with:
           name: Build
           path: build/${{ env.TARGET }}
+
+  build_windows_msvc:
+    name: Build on Windows (MSVC)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Make Build
+        run: mingw32-make build
+      - name: Archive Build Target
+        uses: actions/upload-artifact@v3
+        with:
+          name: Build
+          path: build\${{ env.CONFIG }}\${{ env.TARGET }}.exe
