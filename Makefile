@@ -3,6 +3,7 @@ TARGET := hello_world
 CONFIG := Release
 
 ifeq ($(OS),Windows_NT)
+	SHELL := cmd.exe
     MKDIR := mkdir
 	CP := copy
 	RM := rd /s /q
@@ -18,6 +19,7 @@ else
 	CP := cp
 	RM := rm -rf
 	SEP := /
+	BUILD = $(MAKE) -j
 endif
 
 build:
