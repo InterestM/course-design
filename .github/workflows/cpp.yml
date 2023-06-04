@@ -20,7 +20,7 @@ jobs:
       - name: Archive Build Target
         uses: actions/upload-artifact@v3
         with:
-          name: Build
+          name: build_linux_x86_64
           path: build/${{ env.TARGET }}
 
   build_windows_msvc:
@@ -33,7 +33,7 @@ jobs:
       - name: Archive Build Target
         uses: actions/upload-artifact@v3
         with:
-          name: Build
+          name: build_windows_x86_64_msvc
           path: build\${{ env.CONFIG }}\${{ env.TARGET }}.exe
 
   build_windows_mingw:
@@ -46,5 +46,5 @@ jobs:
       - name: Archive Build Target
         uses: actions/upload-artifact@v3
         with:
-          name: Build
+          name: build_windows_x86_64_mingw
           path: build\${{ env.TARGET }}.exe
