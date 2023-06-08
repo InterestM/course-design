@@ -5,7 +5,7 @@
 #include <vector>
 std::vector<std::vector<std::string>> Database::LoadRecord() {
   std::vector<std::vector<std::string>> file = {
-      {"ID", "类型", "型号", "归属", "数量", "状态", "证据"}};
+      {"ID", "类型", "型号", "归属", "数量", "状态", "来源"}};
   try {
     SQLite::Database db("data.db3",
                         SQLite::OPEN_CREATE | SQLite::OPEN_READWRITE);

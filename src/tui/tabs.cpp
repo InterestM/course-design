@@ -7,8 +7,8 @@
 
 #include "homescreen.cpp"
 #include "include/options.hpp"
+#include "query.cpp"
 #include "setting.cpp"
-#include "table.cpp"
 using namespace ftxui;
 int tab_index = 0;
 
