@@ -95,3 +95,12 @@ void Database::InsertRecord(std::string (&tmp)[6]) {
   query.exec();
   transaction.commit();
 }
+
+void Database::DeleteRecord(const std::string &id) {
+  SQLite::Database db("data.db3", SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
+  SQLite::Transaction transaction(db);
+  SQLite::Statement query{db, "DELETE FROM data WHERE ID = ?;"};
+  query.bind(1, id);
+  query.exec();
+  transaction.commit();
+}

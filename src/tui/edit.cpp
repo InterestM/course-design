@@ -1,6 +1,8 @@
 #include "ftxui/component/component.hpp"
 #include "ftxui/screen/color.hpp" // for Color, Color::Blue, Color::Cyan, Color::White, ftxui
 #include "include/operate.hpp"
+#include <ftxui/component/component_base.hpp>
+#include <ftxui/dom/elements.hpp>
 using namespace ftxui;
 // this file will include some interface for user to edit data.
 std::string inserts[6];
@@ -12,12 +14,17 @@ Component insert[6] = {
     Input(&(inserts[4]), "Destoryed/Captured"),
     Input(&(inserts[5]), "URL"),
 };
-
+std::string deleted;
+Component deleting = Input(&deleted, "number");
 auto insertButton = Button("执行", [] {
   Database::InsertRecord(inserts);
   Database::QueryRecord();
 });
-auto insertComponent = Container::Horizontal({
+auto deleteButton = Button("执行", [] {
+  Database::DeleteRecord(deleted);
+  Database::QueryRecord();
+});
+auto editComponent = Container::Horizontal({
     insert[0],
     insert[1],
     insert[2],
@@ -25,8 +32,11 @@ auto insertComponent = Container::Horizontal({
     insert[4],
     insert[5],
     insertButton,
+    deleting,
+    deleteButton,
 });
-auto edits = Renderer(insertComponent, [] {
+
+auto edits = Renderer(editComponent, [] {
   return vbox({
       hbox({
           window(text("添加记录"),
@@ -39,6 +49,13 @@ auto edits = Renderer(insertComponent, [] {
                      hbox(text(" 来源  : "), insert[5]->Render()),
                  })),
           insertButton->Render(),
+      }) | hcenter,
+      hbox({
+          window(text("删除记录"),
+                 hbox({
+                     hbox(text(" 目标ID  : "), deleting->Render()),
+                 })),
+          deleteButton->Render(),
       }) | hcenter,
   });
 });
