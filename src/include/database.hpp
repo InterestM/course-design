@@ -14,5 +14,6 @@ public:
                           const std::string &, const std::string &);
   static void InsertRecord(std::string (&)[6]);
   static void DeleteRecord(const std::string &);
+  static int calcSum(const std::string);
 };
 #endif // !OPERATE_HPP

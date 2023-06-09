@@ -1,7 +1,7 @@
-#include "include/operate.hpp"
 #include "SQLiteCpp/Database.h"
 #include "SQLiteCpp/SQLiteCpp.h"
 #include "SQLiteCpp/Statement.h"
+#include "include/database.hpp"
 #include <string>
 #include <vector>
 
@@ -97,7 +97,7 @@ void Database::InsertRecord(std::string (&tmp)[6]) {
 }
 
 void Database::DeleteRecord(const std::string &id) {
-  SQLite::Database db("data.db3", SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
+  SQLite::Database db("data.db3", SQLite::OPEN_READWRITE);
   SQLite::Transaction transaction(db);
   SQLite::Statement query{db, "DELETE FROM data WHERE ID = ?;"};
   query.bind(1, id);

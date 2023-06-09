@@ -24,7 +24,7 @@ Component homescreen = Renderer([] {
               hcenter | bold,
       }) | borderRounded,
       text("Losses") | underlined | hcenter,
-      hbox({text("Red"), filler(), text("Blue")}),
+      hbox({text("Red") | border, filler(), text("Blue") | border}),
       separatorDashed(),
       hbox({
           gauge(0.2) | color(Color::Blue),
