@@ -5,6 +5,7 @@
 #include "ftxui/component/component_options.hpp" // for MenuOption, UnderlineOption
 #include "ftxui/screen/color.hpp" // for Color, Color::Blue, Color::Red
 
+#include "edit.cpp"
 #include "homescreen.cpp"
 #include "include/options.hpp"
 #include "query.cpp"
@@ -23,6 +24,7 @@ auto tab_content = Container::Tab(
     {
         homescreen,
         records,
+        edits,
         settings,
     },
     &tab_index);
