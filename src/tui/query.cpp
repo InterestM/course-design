@@ -10,6 +10,10 @@
 #include "ftxui/screen/color.hpp" // for Color, Color::Blue, Color::Cyan, Color::White, ftxui
 
 using namespace ftxui;
+
+namespace {
+
+
 std::string inputs[4];
 Component input[4] = {
     Input(&(inputs[0]), "Type"),
@@ -59,7 +63,10 @@ auto queryComponent = Container::Horizontal({
     input[3],
     queryButton,
 });
+
+}
 auto records = Renderer(queryComponent, [] {
+
   table.load();
   return vbox(
       {hbox({

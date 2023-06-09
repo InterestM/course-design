@@ -7,8 +7,7 @@
 #include "include/options.hpp"
 using namespace ftxui;
 //-----Planing to use a separate file to save configuration-------
-Options option;
-Options::Options() {
+Options::Options() : option{MenuOption::HorizontalAnimated()} {
   using namespace std::literals; // for operator""ms
   option = MenuOption::HorizontalAnimated();
   // option.underline.SetAnimationFunction(animation::easing::BackOut);
