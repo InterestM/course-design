@@ -13,7 +13,6 @@ using namespace ftxui;
 
 namespace {
 
-
 std::string inputs[4];
 Component input[4] = {
     Input(&(inputs[0]), "Type"),
@@ -64,9 +63,8 @@ auto queryComponent = Container::Horizontal({
     queryButton,
 });
 
-}
+} // namespace
 auto records = Renderer(queryComponent, [] {
-
   table.load();
   return vbox(
       {hbox({

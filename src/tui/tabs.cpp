@@ -1,10 +1,7 @@
 #include "ftxui/component/component.hpp"         // for Menu, Renderer, Vertical
 #include "ftxui/component/component_options.hpp" // for MenuOption, UnderlineOption
 
-
 #include "include/tui/homescreen.hpp"
-
-#include "edit.cpp"
 
 #include "include/options.hpp"
 #include "include/tui/query.hpp"
@@ -20,12 +17,12 @@ std::vector<std::string> tab_entries = {
     "管理",
     "设置",
 };
-auto tab_selection = Menu(&tab_entries, &tab_index, Options::get_instance().option);
+auto tab_selection =
+    Menu(&tab_entries, &tab_index, Options::get_instance().option);
 auto tab_content = Container::Tab(
     {
         homescreen,
         records,
-        edits,
         settings,
     },
     &tab_index);
@@ -35,7 +32,7 @@ auto main_container = Container::Vertical({
     tab_content,
 });
 
-}
+} // namespace
 
 auto main_renderer = Renderer(main_container, [] {
   return vbox({
