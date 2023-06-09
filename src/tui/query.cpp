@@ -10,6 +10,9 @@
 #include "ftxui/screen/color.hpp" // for Color, Color::Blue, Color::Cyan, Color::White, ftxui
 
 using namespace ftxui;
+
+namespace {
+
 //-------------------------------------------------------------------------
 // ftxui::table is being improving
 // ------------------------------------------------------------------------
@@ -63,6 +66,9 @@ auto compoment = Container::Horizontal({
     input[3],
     button,
 });
+
+}
+
 auto records = Renderer(compoment, [] {
   table.load();
   return vbox(

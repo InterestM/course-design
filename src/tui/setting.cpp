@@ -6,33 +6,35 @@
 #include <string>
 
 #include "include/options.hpp"
-using namespace ftxui;
+
+namespace {
 int count = 0;
 auto buttons = Container::Horizontal({
-    Button("test",
-           [] {
-             option.delay_on();
-             count++;
-           }),
-    Button("关闭标签延时效果 现在同样没有用",
-           [] {
-             option.delay_off();
-             count++;
-           }),
+  Button("test",
+         [] {
+         Options::get_instance().delay_on();
+           count++;
+         }),
+  Button("关闭标签延时效果 现在同样没有用",
+         [] {
+         Options::get_instance().delay_off();
+           count++;
+         }),
 });
+}
 
 // Modify the way to render them on screen:
 auto settings = Renderer(buttons, [] {
   std::string underlineColor;
-  if (option.option.underline.color_inactive == Color::Red) {
+  if (Options::get_instance().option.underline.color_inactive == Color::Red) {
     underlineColor = "Red";
   } else {
     underlineColor = "Other";
   }
   return vbox({
-             text(std::to_string(count)),
-             buttons->Render(),
-             text(underlineColor),
+           text(std::to_string(count)),
+           buttons->Render(),
+           text(underlineColor),
          }) |
          border;
 });
