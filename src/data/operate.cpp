@@ -4,6 +4,7 @@
 #include "SQLiteCpp/Statement.h"
 #include <string>
 #include <vector>
+
 void Database::QueryRecord() {
   std::vector<std::vector<std::string>> file = {
       {"ID", "类型", "型号", "归属", "数量", "状态", "来源"}};
@@ -18,23 +19,21 @@ void Database::QueryRecord() {
     SQLite::Statement query(db, "SELECT * FROM data");
     while (query.executeStep()) {
       std::vector<std::string> tmp;
-      tmp.push_back(query.getColumn(0));
-      tmp.push_back(query.getColumn(1));
-      tmp.push_back(query.getColumn(2));
-      tmp.push_back(query.getColumn(3));
-      tmp.push_back(std::to_string(int{query.getColumn(4)}));
-      tmp.push_back(query.getColumn(5));
-      tmp.push_back(query.getColumn(6));
+      for (int i = 0; i < 7; i++)
+        tmp.push_back(query.getColumn(i));
       file.push_back(tmp);
     }
     transaction.commit();
   } catch (std::exception &e) {
-    file = std::vector<std::vector<std::string>>{{"wrong"}};
+    file = std::vector<std::vector<std::string>>{
+        {"something unexpected happened while loading"}};
   }
   data = file;
 }
-void Database::QueryRecord(std::string s_type, std::string s_spec,
-                           std::string s_ads, std::string s_status) {
+
+void Database::QueryRecord(const std::string &s_type, const std::string &s_spec,
+                           const std::string &s_ads,
+                           const std::string &s_status) {
   std::vector<std::vector<std::string>> file = {
       {"ID", "类型", "型号", "归属", "数量", "状态", "来源"}};
   try {
@@ -69,29 +68,39 @@ void Database::QueryRecord(std::string s_type, std::string s_spec,
     }
     while (query.executeStep()) {
       std::vector<std::string> tmp;
-      tmp.push_back(query.getColumn(0));
-      tmp.push_back(query.getColumn(1));
-      tmp.push_back(query.getColumn(2));
-      tmp.push_back(query.getColumn(3));
-      tmp.push_back(std::to_string(int{query.getColumn(4)}));
-      tmp.push_back(query.getColumn(5));
-      tmp.push_back(query.getColumn(6));
+      for (int i = 0; i < 7; i++)
+        tmp.push_back(query.getColumn(i));
       file.push_back(tmp);
     }
     transaction.commit();
   } catch (std::exception &e) {
-    file = std::vector<std::vector<std::string>>{{"wrong"}};
+    file = std::vector<std::vector<std::string>>{
+        {"something unexpected happened while loading"}};
   }
   data = file;
 }
+
 std::vector<std::vector<std::string>> Database::LoadRecord() { return data; }
-void Database::InsertRecord(std::vector<std::string> tmp) {
+
+void Database::InsertRecord(std::string (&tmp)[6]) {
   SQLite::Database db("data.db3", SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
   SQLite::Transaction transaction(db);
   SQLite::Statement query{
       db, "INSERT INTO data "
           "(id,type,specification,adscription,amout,status,evidence) "
           "VALUES (NULL,?,?,?,?,?,?)"};
+  for (int i = 0; i < 6; i++) {
+    query.bind(i + 1, tmp[i]);
+  }
+  query.exec();
+  transaction.commit();
+}
 
+void Database::DeleteRecord(const std::string &id) {
+  SQLite::Database db("data.db3", SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
+  SQLite::Transaction transaction(db);
+  SQLite::Statement query{db, "DELETE FROM data WHERE ID = ?;"};
+  query.bind(1, id);
+  query.exec();
   transaction.commit();
 }

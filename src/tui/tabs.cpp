@@ -1,7 +1,11 @@
 #include "ftxui/component/component.hpp"         // for Menu, Renderer, Vertical
 #include "ftxui/component/component_options.hpp" // for MenuOption, UnderlineOption
 
+
 #include "include/tui/homescreen.hpp"
+
+#include "edit.cpp"
+
 #include "include/options.hpp"
 #include "include/tui/query.hpp"
 #include "include/tui/setting.hpp"
@@ -21,6 +25,7 @@ auto tab_content = Container::Tab(
     {
         homescreen,
         records,
+        edits,
         settings,
     },
     &tab_index);

@@ -5,13 +5,14 @@
 #include <vector>
 
 class Database {
-  std::vector<std::vector<std::string>> data;
+  static inline std::vector<std::vector<std::string>> data;
 
 public:
-  std::vector<std::vector<std::string>> LoadRecord();
-  void QueryRecord();
-  void QueryRecord(std::string, std::string, std::string, std::string);
-  static void InsertRecord(std::vector<std::string>);
-  static void DeleteRecord();
+  static std::vector<std::vector<std::string>> LoadRecord();
+  static void QueryRecord();
+  static void QueryRecord(const std::string &, const std::string &,
+                          const std::string &, const std::string &);
+  static void InsertRecord(std::string (&)[6]);
+  static void DeleteRecord(const std::string &);
 };
 #endif // !OPERATE_HPP

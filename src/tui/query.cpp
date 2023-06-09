@@ -13,9 +13,7 @@ using namespace ftxui;
 
 namespace {
 
-//-------------------------------------------------------------------------
-// ftxui::table is being improving
-// ------------------------------------------------------------------------
+
 std::string inputs[4];
 Component input[4] = {
     Input(&(inputs[0]), "Type"),
@@ -25,14 +23,13 @@ Component input[4] = {
 };
 class Tables {
 public:
-  static inline Database db;
   static inline Table data;
   Tables() {
-    db.QueryRecord();
+    Database::QueryRecord();
     load();
   }
   void load() {
-    data = Table(db.LoadRecord());
+    data = Table(Database::LoadRecord());
     data.SelectAll().Border(LIGHT);
 
     // Add border around the first column.
@@ -56,20 +53,20 @@ public:
   };
 } table;
 
-auto button = Button("查询", [] {
-  table.db.QueryRecord(inputs[0], inputs[1], inputs[2], inputs[3]);
+auto queryButton = Button("查询", [] {
+  Database::QueryRecord(inputs[0], inputs[1], inputs[2], inputs[3]);
 });
-auto compoment = Container::Horizontal({
+auto queryComponent = Container::Horizontal({
     input[0],
     input[1],
     input[2],
     input[3],
-    button,
+    queryButton,
 });
 
 }
+auto records = Renderer(queryComponent, [] {
 
-auto records = Renderer(compoment, [] {
   table.load();
   return vbox(
       {hbox({
@@ -79,7 +76,7 @@ auto records = Renderer(compoment, [] {
                                     hbox(text(" 归属  : "), input[2]->Render()),
                                     hbox(text(" 状态  : "), input[3]->Render()),
                                 })),
-           button->Render(),
+           queryButton->Render(),
        }) | hcenter,
        table.data.Render() | hcenter});
 });
