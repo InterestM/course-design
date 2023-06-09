@@ -13,42 +13,49 @@ using namespace ftxui;
 //-------------------------------------------------------------------------
 // ftxui::table is being improving
 // ------------------------------------------------------------------------
-std::string inputs[6];
-Component input[6]{
+std::string inputs[4];
+Component input[4] = {
     Input(&(inputs[0]), "Type"),
     Input(&(inputs[1]), "Specification"),
     Input(&(inputs[2]), "Red/Blue"),
     Input(&(inputs[3]), "Destoryed/Captured"),
 };
-class tables {
+class Tables {
 public:
-  Database db;
-  Table table = Table(db.LoadRecord());
-  tables() {
-    table.SelectAll().Border(LIGHT);
+  static inline Database db;
+  static inline Table data;
+  Tables() {
+    db.QueryRecord();
+    load();
+  }
+  void load() {
+    data = Table(db.LoadRecord());
+    data.SelectAll().Border(LIGHT);
 
     // Add border around the first column.
-    table.SelectColumn(0).Border(LIGHT);
+    data.SelectColumn(0).Border(LIGHT);
 
     // Make first row bold with a double border.
-    table.SelectRow(0).Decorate(bold);
-    table.SelectRow(0).SeparatorVertical(LIGHT);
-    table.SelectRow(0).Border(DOUBLE);
+    data.SelectRow(0).Decorate(bold);
+    data.SelectRow(0).SeparatorVertical(LIGHT);
+    data.SelectRow(0).Border(DOUBLE);
 
     // Align right the "Release date" column.
-    table.SelectColumn(2).DecorateCells(center);
-    table.SelectColumn(5).DecorateCells(center);
+    data.SelectColumn(2).DecorateCells(center);
+    data.SelectColumn(5).DecorateCells(center);
 
     // Select row from the second to the last.
-    auto content = table.SelectRows(1, -1);
+    auto content = data.SelectRows(1, -1);
     // Alternate in between 3 colors.
     content.DecorateCellsAlternateRow(color(Color::Blue), 3, 0);
     content.DecorateCellsAlternateRow(color(Color::Cyan), 3, 1);
     content.DecorateCellsAlternateRow(color(Color::White), 3, 2);
-  }
-};
+  };
+} table;
 
-auto button = Button("查询", [] {});
+auto button = Button("查询", [] {
+  table.db.QueryRecord(inputs[0], inputs[1], inputs[2], inputs[3]);
+});
 auto compoment = Container::Horizontal({
     input[0],
     input[1],
@@ -57,16 +64,16 @@ auto compoment = Container::Horizontal({
     button,
 });
 auto records = Renderer(compoment, [] {
-  tables table;
+  table.load();
   return vbox(
       {hbox({
            window(text("条件"), hbox({
-                                    hbox(text(" 型号  : "), input[0]->Render()),
-                                    hbox(text(" 规格  : "), input[1]->Render()),
+                                    hbox(text(" 类型  : "), input[0]->Render()),
+                                    hbox(text(" 型号  : "), input[1]->Render()),
                                     hbox(text(" 归属  : "), input[2]->Render()),
                                     hbox(text(" 状态  : "), input[3]->Render()),
                                 })),
            button->Render(),
        }) | hcenter,
-       table.table.Render() | hcenter});
+       table.data.Render() | hcenter});
 });

@@ -1,9 +1,10 @@
 #include "include/operate.hpp"
 #include "SQLiteCpp/Database.h"
 #include "SQLiteCpp/SQLiteCpp.h"
+#include "SQLiteCpp/Statement.h"
 #include <string>
 #include <vector>
-std::vector<std::vector<std::string>> Database::LoadRecord() {
+void Database::QueryRecord() {
   std::vector<std::vector<std::string>> file = {
       {"ID", "类型", "型号", "归属", "数量", "状态", "来源"}};
   try {
@@ -13,6 +14,7 @@ std::vector<std::vector<std::string>> Database::LoadRecord() {
     db.exec("CREATE TABLE IF NOT EXISTS data (id INTEGER PRIMARY KEY "
             "AUTOINCREMENT,type TEXT,specification TEXT,adscription "
             "TEXT,amout INTEGER,status TEXT,evidence TEXT)");
+
     SQLite::Statement query(db, "SELECT * FROM data");
     while (query.executeStep()) {
       std::vector<std::string> tmp;
@@ -27,10 +29,62 @@ std::vector<std::vector<std::string>> Database::LoadRecord() {
     }
     transaction.commit();
   } catch (std::exception &e) {
-    return std::vector<std::vector<std::string>>{{"wrong"}};
+    file = std::vector<std::vector<std::string>>{{"wrong"}};
   }
-  return file;
+  data = file;
 }
+void Database::QueryRecord(std::string s_type, std::string s_spec,
+                           std::string s_ads, std::string s_status) {
+  std::vector<std::vector<std::string>> file = {
+      {"ID", "类型", "型号", "归属", "数量", "状态", "来源"}};
+  try {
+    SQLite::Database db("data.db3",
+                        SQLite::OPEN_CREATE | SQLite::OPEN_READWRITE);
+    SQLite::Transaction transaction(db);
+    db.exec("CREATE TABLE IF NOT EXISTS data (id INTEGER PRIMARY KEY "
+            "AUTOINCREMENT,type TEXT,specification TEXT,adscription "
+            "TEXT,amout INTEGER,status TEXT,evidence TEXT)");
+    SQLite::Statement query(
+        db, "SELECT * FROM data WHERE type LIKE ? AND specification LIKE ? AND "
+            "adscription LIKE ? AND status LIKE ?");
+    if (s_type.length() > 0) {
+      query.bind(1, s_type);
+    } else {
+      query.bind(1, "%");
+    }
+    if (s_spec.length() > 0) {
+      query.bind(2, s_spec + "%");
+    } else {
+      query.bind(2, "%");
+    }
+    if (s_ads.length() > 0) {
+      query.bind(3, s_ads);
+    } else {
+      query.bind(3, "%");
+    }
+    if (s_status.length() > 0) {
+      query.bind(4, "%" + s_status + "%");
+    } else {
+      query.bind(4, "%");
+    }
+    while (query.executeStep()) {
+      std::vector<std::string> tmp;
+      tmp.push_back(query.getColumn(0));
+      tmp.push_back(query.getColumn(1));
+      tmp.push_back(query.getColumn(2));
+      tmp.push_back(query.getColumn(3));
+      tmp.push_back(std::to_string(int{query.getColumn(4)}));
+      tmp.push_back(query.getColumn(5));
+      tmp.push_back(query.getColumn(6));
+      file.push_back(tmp);
+    }
+    transaction.commit();
+  } catch (std::exception &e) {
+    file = std::vector<std::vector<std::string>>{{"wrong"}};
+  }
+  data = file;
+}
+std::vector<std::vector<std::string>> Database::LoadRecord() { return data; }
 void Database::InsertRecord(std::vector<std::string> tmp) {
   SQLite::Database db("data.db3", SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
   SQLite::Transaction transaction(db);

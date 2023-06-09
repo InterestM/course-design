@@ -5,8 +5,12 @@
 #include <vector>
 
 class Database {
+  std::vector<std::vector<std::string>> data;
+
 public:
-  static std::vector<std::vector<std::string>> LoadRecord();
+  std::vector<std::vector<std::string>> LoadRecord();
+  void QueryRecord();
+  void QueryRecord(std::string, std::string, std::string, std::string);
   static void InsertRecord(std::vector<std::string>);
   static void DeleteRecord();
 };
