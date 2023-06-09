@@ -1,16 +1,17 @@
-#include <chrono> // for operator""ms, literals
-#include <vector> // for vector
-
 #include "ftxui/component/component.hpp"         // for Menu, Renderer, Vertical
 #include "ftxui/component/component_options.hpp" // for MenuOption, UnderlineOption
-#include "ftxui/screen/color.hpp" // for Color, Color::Blue, Color::Red
+
+
+#include "include/tui/homescreen.hpp"
 
 #include "edit.cpp"
-#include "homescreen.cpp"
+
 #include "include/options.hpp"
-#include "query.cpp"
-#include "setting.cpp"
-using namespace ftxui;
+#include "include/tui/query.hpp"
+#include "include/tui/setting.hpp"
+
+namespace {
+
 int tab_index = 0;
 
 std::vector<std::string> tab_entries = {
@@ -19,7 +20,7 @@ std::vector<std::string> tab_entries = {
     "管理",
     "设置",
 };
-auto tab_selection = Menu(&tab_entries, &tab_index, option.option);
+auto tab_selection = Menu(&tab_entries, &tab_index, Options::get_instance().option);
 auto tab_content = Container::Tab(
     {
         homescreen,
@@ -33,6 +34,8 @@ auto main_container = Container::Vertical({
     tab_selection,
     tab_content,
 });
+
+}
 
 auto main_renderer = Renderer(main_container, [] {
   return vbox({

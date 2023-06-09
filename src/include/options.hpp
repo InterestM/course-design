@@ -7,10 +7,15 @@ using namespace ftxui;
 //-----Planing to use a separate file to save configuration-------
 class Options {
 public:
-  MenuOption option = MenuOption::HorizontalAnimated();
-  Options();
+  static Options &get_instance() {
+    static Options instance;
+    return instance;
+  }
+  MenuOption option;
   void delay_on();
   void delay_off();
+private:
+  Options();
+  Options(Options const &) = delete;
 };
-extern Options option;
 #endif

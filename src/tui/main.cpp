@@ -1,9 +1,11 @@
+#include <chrono> // for operator""ms, literals
 #include <ftxui/dom/elements.hpp>
 #include <thread> // for sleep_for, thread
 
 #include "ftxui/component/component.hpp" // for Checkbox, Renderer, Horizontal, Vertical, Input, Menu, Radiobox, ResizableSplitLeft, Tab
 #include "ftxui/component/screen_interactive.hpp" // for Component, ScreenInteractive
-#include "tabs.cpp"
+#include "include/tui/tabs.hpp"
+
 int main(int argc, char *argv[]) {
   using namespace ftxui;
   auto screen = ScreenInteractive::Fullscreen();
