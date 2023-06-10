@@ -41,12 +41,12 @@ auto edits = Renderer(editComponent, [] {
       hbox({
           window(text("添加记录"),
                  hbox({
-                     hbox(text(" 类型  : "), insert[0]->Render()),
-                     hbox(text(" 型号  : "), insert[1]->Render()),
-                     hbox(text(" 归属  : "), insert[2]->Render()),
-                     hbox(text(" 数量  : "), insert[3]->Render()),
-                     hbox(text(" 状态  : "), insert[4]->Render()),
-                     hbox(text(" 来源  : "), insert[5]->Render()),
+                     hbox(text(" 类型 : "), insert[0]->Render()) | borderLight,
+                     hbox(text(" 型号 : "), insert[1]->Render()) | borderLight,
+                     hbox(text(" 归属 : "), insert[2]->Render()) | borderLight,
+                     hbox(text(" 数量 : "), insert[3]->Render()) | borderLight,
+                     hbox(text(" 状态 : "), insert[4]->Render()) | borderLight,
+                     hbox(text(" 来源 : "), insert[5]->Render()) | borderLight,
                  })),
           insertButton->Render(),
       }) | hcenter,

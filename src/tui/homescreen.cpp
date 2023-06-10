@@ -17,30 +17,44 @@ Component homescreen = Renderer([] {
           text("◥⊙ ▲⊙ ▲⊙ ▲⊙ ▲⊙ ▲⊙ ▲⊙◤..."),
       }),
   });
+  //-----------------------------------------------------
+  // Query and present the loss comparison of existing equipment types
+  //-----------------------------------------------------
+  auto container = Container::Vertical({});
+
+  container->Add(Renderer([] {
+    return hbox({
+               gauge(0.2) | color(Color::Blue),
+               text("300"),
+               text(" Tank ") | hcenter,
+               text("400"),
+               gaugeLeft(0.3) | color(Color ::Red),
+           }) |
+           flex;
+  }));
+  container->Add(Renderer([] {
+    return hbox({
+               gauge(0.5) | color(Color::Blue),
+               text("750"),
+               text(" Infantry Fighting Vehicles ") | hcenter,
+               text("1200"),
+               gaugeLeft(0.8) | color(Color ::Red),
+           }) |
+           flex;
+  }));
 
   return vbox({
       vbox({
           tank | hcenter,
-          text("Open Source Information Management System for Equipment Loss "
+          text("Open Source Information Management System for Equipment "
+               "Loss "
                "in Armed Conflict") |
               hcenter | bold,
       }) | borderRounded,
       text("Losses") | underlined | hcenter,
       hbox({text("Red") | border, filler(), text("Blue") | border}),
       separatorDashed(),
-      hbox({
-          gauge(0.2) | color(Color::Blue),
-          text("300"),
-          text(" Tank ") | hcenter,
-          text("400"),
-          gaugeLeft(0.3) | color(Color ::Red),
-      }),
-      hbox({
-          gauge(0.5) | color(Color::Blue),
-          text("750"),
-          text(" Infantry Fighting Vehicles ") | hcenter,
-          text("1200"),
-          gaugeLeft(0.8) | color(Color ::Red),
-      }),
+      container->Render(),
+
   });
 });
