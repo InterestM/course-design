@@ -4,7 +4,7 @@
 
 #include "ftxui/component/component.hpp" // for Checkbox, Renderer, Horizontal, Vertical, Input, Menu, Radiobox, ResizableSplitLeft, Tab
 #include "ftxui/component/screen_interactive.hpp" // for Component, ScreenInteractive
-#include "include/tui/tabs.hpp"
+#include "tui/tabs.hpp"
 
 int main(int argc, char *argv[]) {
   using namespace ftxui;

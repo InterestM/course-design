@@ -1,10 +1,8 @@
 #include "ftxui/component/component.hpp" // for Checkbox, Renderer, Horizontal, Vertical, Input, Menu, Radiobox, ResizableSplitLeft, Tab
 #include "ftxui/screen/color.hpp" // for Color, Color::BlueLight, Color::RedLight, Color::Black, Color::Blue, Color::Cyan, Color::CyanLight, Color::GrayDark, Color::GrayLight, Color::Green, Color::GreenLight, Color::Magenta, Color::MagentaLight, Color::Red, Color::White, Color::Yellow, Color::YellowLight, Color::Default, Color::Palette256, ftxui
-#include "include/database.hpp"
 #include <ftxui/component/component_base.hpp>
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/dom/node.hpp>
-#include <string>
 
 using namespace ftxui;
 
@@ -46,10 +44,8 @@ Component homescreen = Renderer([] {
   return vbox({
       vbox({
           tank | hcenter,
-          text("Open Source Information Management System for Equipment "
-               "Loss "
-               "in Armed Conflict") |
-              hcenter | bold,
+          text("Open Source Information Management System for Equipment Loss "
+               "in Armed Conflict") | hcenter | bold,
       }) | borderRounded,
       text("Losses") | underlined | hcenter,
       hbox({text("Red") | border, filler(), text("Blue") | border}),

@@ -12,7 +12,7 @@ public:
   static void QueryRecord();
   static void QueryRecord(const std::string &, const std::string &,
                           const std::string &, const std::string &);
-  static void InsertRecord(std::string (&)[6]);
+  static void InsertRecord(const std::string (&)[6]);
   static void DeleteRecord(const std::string &);
   static int calcSum(const std::string);
 };

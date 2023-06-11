@@ -1,27 +1,29 @@
-#include "ftxui/dom/table.hpp"     // for Table, TableSelection
-#include "ftxui/screen/screen.hpp" // for Screen
-#include "include/database.hpp"
+#include <ftxui/component/component_base.hpp>
 #include <ftxui/dom/elements.hpp>
-#include <string> // for basic_string, allocator, string
-#include <vector> // for vector
+#include <string>  // for basic_string, allocator, string
+#include <vector>  // for vector
 
+#include "data/database.hpp"
 #include "ftxui/component/component.hpp"
-#include "ftxui/dom/node.hpp" // for Render
-#include "ftxui/screen/color.hpp" // for Color, Color::Blue, Color::Cyan, Color::White, ftxui
+#include "ftxui/dom/node.hpp"   // for Render
+#include "ftxui/dom/table.hpp"  // for Table, TableSelection
+#include "ftxui/screen/color.hpp"  // for Color, Color::Blue, Color::Cyan, Color::White, ftxui
+#include "ftxui/screen/screen.hpp"  // for Screen
+#include "tui/component/labeled_input.hpp"
 
 using namespace ftxui;
 
 namespace {
 
-std::string inputs[4];
-Component input[4] = {
-    Input(&(inputs[0]), "Type"),
-    Input(&(inputs[1]), "Specification"),
-    Input(&(inputs[2]), "Red/Blue"),
-    Input(&(inputs[3]), "Destoryed/Captured"),
+std::vector<ftxui::Component> labeledInputs = {
+    LabeledInput("类型: ", "Type"),
+    LabeledInput("型号: ", "Specification"),
+    LabeledInput("归属: ", "Red/Blue"),
+    LabeledInput("状态: ", "Destoryed/Captured"),
 };
+
 class Tables {
-public:
+ public:
   static inline Table data;
   Tables() {
     Database::QueryRecord();
@@ -53,28 +55,24 @@ public:
 } table;
 
 auto queryButton = Button("查询", [] {
-  Database::QueryRecord(inputs[0], inputs[1], inputs[2], inputs[3]);
-});
-auto queryComponent = Container::Horizontal({
-    input[0],
-    input[1],
-    input[2],
-    input[3],
-    queryButton,
+  Database::QueryRecord(
+      std::dynamic_pointer_cast<LabeledInputBase>(labeledInputs[0])->GetInput(),
+      std::dynamic_pointer_cast<LabeledInputBase>(labeledInputs[1])->GetInput(),
+      std::dynamic_pointer_cast<LabeledInputBase>(labeledInputs[2])->GetInput(),
+      std::dynamic_pointer_cast<LabeledInputBase>(labeledInputs[3])
+          ->GetInput());
 });
 
-} // namespace
+auto labeledInputsComponent = Container::Horizontal(labeledInputs);
+auto queryComponent =
+    Container::Horizontal({labeledInputsComponent, queryButton});
+
+}  // namespace
+
 auto records = Renderer(queryComponent, [] {
   table.load();
-  return vbox(
-      {hbox({
-           window(text("条件"), hbox({
-                                    hbox(text(" 类型  : "), input[0]->Render()),
-                                    hbox(text(" 型号  : "), input[1]->Render()),
-                                    hbox(text(" 归属  : "), input[2]->Render()),
-                                    hbox(text(" 状态  : "), input[3]->Render()),
-                                })),
-           queryButton->Render(),
-       }) | hcenter,
-       table.data.Render() | hcenter});
+  return vbox({hbox({window(text("条件"), labeledInputsComponent->Render()),
+                     queryButton->Render()}) |
+                   hcenter,
+               table.data.Render() | hcenter});
 });

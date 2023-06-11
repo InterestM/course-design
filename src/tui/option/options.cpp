@@ -4,23 +4,22 @@
 #include <chrono>                 // for operator""ms, literals
 #include <iostream>
 
-#include "include/options.hpp"
+#include "tui/option/options.hpp"
 using namespace ftxui;
 //-----Planing to use a separate file to save configuration-------
 Options::Options() : option{MenuOption::HorizontalAnimated()} {
-  using namespace std::literals; // for operator""ms
+  // using namespace std::literals; // for operator""ms
   option = MenuOption::HorizontalAnimated();
   // option.underline.SetAnimationFunction(animation::easing::BackOut);
   option.underline.color_inactive = Color::IndianRed;
-  ;
   // option.underline.SetAnimationDuration(350ms);
 }
-void Options::delay_on() {
+void Options::DelayOn() {
   using namespace std::literals;
   option.underline.follower_delay = 250ms;
   option.underline.color_inactive = Color::Red;
 }
-void Options::delay_off() {
+void Options::DelayOff() {
   using namespace std::literals;
   option.underline.follower_delay = 0ms;
   option.underline.color_inactive = Color::Yellow;

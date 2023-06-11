@@ -31,11 +31,12 @@ project(hello_world)
 # set(SRC_LIST src/tui/option/options.cpp src/tui/main.cpp src/tui/homescreen.cpp src/data/operate.cpp)
 aux_source_directory(src/tui SRC_TUI_LIST)
 aux_source_directory(src/tui/option SRC_TUI_OPTION_LIST)
+aux_source_directory(src/tui/component SRC_TUI_COMPONENT_LIST)
 aux_source_directory(src/data SRC_DATA_LIST)
 
-add_executable(${PROJECT_NAME} ${SRC_TUI_LIST} ${SRC_DATA_LIST} ${SRC_TUI_OPTION_LIST})
+add_executable(${PROJECT_NAME} ${SRC_TUI_LIST} ${SRC_TUI_OPTION_LIST} ${SRC_TUI_COMPONENT_LIST} ${SRC_DATA_LIST})
 
-target_include_directories(${PROJECT_NAME} PRIVATE src)
+target_include_directories(${PROJECT_NAME} PRIVATE include)
 
 target_link_libraries(${PROJECT_NAME}   
   PRIVATE ftxui::screen
