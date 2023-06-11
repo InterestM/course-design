@@ -1,11 +1,11 @@
 #include "ftxui/component/component.hpp"         // for Menu, Renderer, Vertical
 #include "ftxui/component/component_options.hpp" // for MenuOption, UnderlineOption
 
-#include "include/options.hpp"
-#include "include/tui/edit.hpp"
-#include "include/tui/homescreen.hpp"
-#include "include/tui/query.hpp"
-#include "include/tui/setting.hpp"
+#include "tui/option/options.hpp"
+#include "tui/edit.hpp"
+#include "tui/homescreen.hpp"
+#include "tui/query.hpp"
+#include "tui/setting.hpp"
 
 namespace {
 

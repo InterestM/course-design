@@ -1,8 +1,8 @@
 #include "ftxui/component/component.hpp"
 #include "ftxui/screen/color.hpp" // for Color, Color::Blue, Color::Cyan, Color::White, ftxui
-#include "include/database.hpp"
 #include <ftxui/component/component_base.hpp>
 #include <ftxui/dom/elements.hpp>
+#include "data/database.hpp"
 using namespace ftxui;
 // this file will include some interface for user to edit data.
 std::string inserts[6];

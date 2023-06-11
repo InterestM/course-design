@@ -1,7 +1,7 @@
 #include "SQLiteCpp/Database.h"
 #include "SQLiteCpp/SQLiteCpp.h"
 #include "SQLiteCpp/Statement.h"
-#include "include/database.hpp"
+#include "data/database.hpp"
 #include <string>
 #include <vector>
 

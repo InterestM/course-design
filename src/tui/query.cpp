@@ -1,10 +1,10 @@
 #include "ftxui/dom/table.hpp"     // for Table, TableSelection
 #include "ftxui/screen/screen.hpp" // for Screen
-#include "include/database.hpp"
 #include <ftxui/dom/elements.hpp>
 #include <string> // for basic_string, allocator, string
 #include <vector> // for vector
 
+#include "data/database.hpp"
 #include "ftxui/component/component.hpp"
 #include "ftxui/dom/node.hpp" // for Render
 #include "ftxui/screen/color.hpp" // for Color, Color::Blue, Color::Cyan, Color::White, ftxui

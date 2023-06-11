@@ -35,7 +35,7 @@ aux_source_directory(src/data SRC_DATA_LIST)
 
 add_executable(${PROJECT_NAME} ${SRC_TUI_LIST} ${SRC_DATA_LIST} ${SRC_TUI_OPTION_LIST})
 
-target_include_directories(${PROJECT_NAME} PRIVATE src)
+target_include_directories(${PROJECT_NAME} PRIVATE include)
 
 target_link_libraries(${PROJECT_NAME}   
   PRIVATE ftxui::screen

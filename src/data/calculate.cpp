@@ -1,5 +1,5 @@
 #include "SQLiteCpp/Database.h"
-#include "include/database.hpp"
+#include "data/database.hpp"
 
 int Database::calcSum(const std::string target) {
   SQLite::Database db("data.db3");

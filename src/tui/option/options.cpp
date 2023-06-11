@@ -4,7 +4,7 @@
 #include <chrono>                 // for operator""ms, literals
 #include <iostream>
 
-#include "include/options.hpp"
+#include "tui/option/options.hpp"
 using namespace ftxui;
 //-----Planing to use a separate file to save configuration-------
 Options::Options() : option{MenuOption::HorizontalAnimated()} {
