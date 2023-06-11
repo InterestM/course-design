@@ -82,7 +82,7 @@ void Database::QueryRecord(const std::string &s_type, const std::string &s_spec,
 
 std::vector<std::vector<std::string>> Database::LoadRecord() { return data; }
 
-void Database::InsertRecord(std::string (&tmp)[6]) {
+void Database::InsertRecord(const std::string (&tmp)[6]) {
   SQLite::Database db("data.db3", SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
   SQLite::Transaction transaction(db);
   SQLite::Statement query{

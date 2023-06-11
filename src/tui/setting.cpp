@@ -12,12 +12,12 @@ int count = 0;
 auto buttons = Container::Horizontal({
   Button("test",
          [] {
-         Options::get_instance().delay_on();
+         Options::GetInstance().DelayOn();
            count++;
          }),
   Button("关闭标签延时效果 现在同样没有用",
          [] {
-         Options::get_instance().delay_off();
+         Options::GetInstance().DelayOff();
            count++;
          }),
 });
@@ -26,7 +26,7 @@ auto buttons = Container::Horizontal({
 // Modify the way to render them on screen:
 auto settings = Renderer(buttons, [] {
   std::string underlineColor;
-  if (Options::get_instance().option.underline.color_inactive == Color::Red) {
+  if (Options::GetInstance().option.underline.color_inactive == Color::Red) {
     underlineColor = "Red";
   } else {
     underlineColor = "Other";
@@ -35,6 +35,5 @@ auto settings = Renderer(buttons, [] {
            text(std::to_string(count)),
            buttons->Render(),
            text(underlineColor),
-         }) |
-         border;
+         }) | border;
 });

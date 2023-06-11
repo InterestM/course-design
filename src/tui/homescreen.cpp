@@ -20,8 +20,7 @@ Component homescreen = Renderer([] {
       vbox({
           tank | hcenter,
           text("Open Source Information Management System for Equipment Loss "
-               "in Armed Conflict") |
-              hcenter | bold,
+               "in Armed Conflict") | hcenter | bold,
       }) | borderRounded,
       text("Losses") | underlined | hcenter,
       hbox({text("Red") | border, filler(), text("Blue") | border}),
@@ -31,14 +30,14 @@ Component homescreen = Renderer([] {
           text("300"),
           text(" Tank ") | hcenter,
           text("400"),
-          gaugeLeft(0.3) | color(Color ::Red),
+          gaugeLeft(0.3) | color(Color::Red),
       }),
       hbox({
           gauge(0.5) | color(Color::Blue),
           text("750"),
           text(" Infantry Fighting Vehicles ") | hcenter,
           text("1200"),
-          gaugeLeft(0.8) | color(Color ::Red),
+          gaugeLeft(0.8) | color(Color::Red),
       }),
   });
 });

@@ -1,13 +1,13 @@
-#include "ftxui/dom/table.hpp"     // for Table, TableSelection
-#include "ftxui/screen/screen.hpp" // for Screen
 #include <ftxui/dom/elements.hpp>
-#include <string> // for basic_string, allocator, string
-#include <vector> // for vector
+#include <string>  // for basic_string, allocator, string
+#include <vector>  // for vector
 
 #include "data/database.hpp"
 #include "ftxui/component/component.hpp"
-#include "ftxui/dom/node.hpp" // for Render
-#include "ftxui/screen/color.hpp" // for Color, Color::Blue, Color::Cyan, Color::White, ftxui
+#include "ftxui/dom/node.hpp"   // for Render
+#include "ftxui/dom/table.hpp"  // for Table, TableSelection
+#include "ftxui/screen/color.hpp"  // for Color, Color::Blue, Color::Cyan, Color::White, ftxui
+#include "ftxui/screen/screen.hpp"  // for Screen
 
 using namespace ftxui;
 
@@ -21,7 +21,7 @@ Component input[4] = {
     Input(&(inputs[3]), "Destoryed/Captured"),
 };
 class Tables {
-public:
+ public:
   static inline Table data;
   Tables() {
     Database::QueryRecord();
@@ -63,7 +63,8 @@ auto queryComponent = Container::Horizontal({
     queryButton,
 });
 
-} // namespace
+}  // namespace
+
 auto records = Renderer(queryComponent, [] {
   table.load();
   return vbox(
