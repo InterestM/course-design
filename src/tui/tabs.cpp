@@ -18,7 +18,7 @@ std::vector<std::string> tab_entries = {
     "设置",
 };
 auto tab_selection =
-    Menu(&tab_entries, &tab_index, Options::GetInstance().option);
+    Menu(&tab_entries, &tab_index, Options::GetInstance().GetOption());
 auto tab_content = Container::Tab(
     {
         homescreen,

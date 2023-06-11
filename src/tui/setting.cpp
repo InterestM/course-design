@@ -26,7 +26,7 @@ auto buttons = Container::Horizontal({
 // Modify the way to render them on screen:
 auto settings = Renderer(buttons, [] {
   std::string underlineColor;
-  if (Options::GetInstance().option.underline.color_inactive == Color::Red) {
+  if (Options::GetInstance().GetOption().underline.color_inactive == Color::Red) {
     underlineColor = "Red";
   } else {
     underlineColor = "Other";

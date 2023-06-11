@@ -11,12 +11,13 @@ class Options {
     static Options instance;
     return instance;
   }
-  MenuOption option;
+  const MenuOption &GetOption() const { return option; }
   void DelayOn();
   void DelayOff();
 
  private:
   Options();
   Options(Options const &) = delete;
+  MenuOption option;
 };
 #endif
