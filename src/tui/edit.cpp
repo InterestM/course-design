@@ -5,17 +5,17 @@
 
 #include "db/database.hpp"
 #include "ftxui/component/component.hpp"
-#include "ftxui/screen/color.hpp"  // for Color, Color::Blue, Color::Cyan, Color::White, ftxui
+#include "ftxui/screen/color.hpp" // for Color, Color::Blue, Color::Cyan, Color::White, ftxui
 #include "tui/component/labeled_input.hpp"
 using namespace ftxui;
 
 std::vector<Component> labeledInputs = {
-    LabeledInput("类型: " , "Type"               , borderLight) ,
-    LabeledInput("型号: " , "Specification"      , borderLight) ,
-    LabeledInput("归属: " , "Red/Blue"           , borderLight) ,
-    LabeledInput("数量: " , "number"             , borderLight) ,
-    LabeledInput("状态: " , "Destoryed/Captured" , borderLight) ,
-    LabeledInput("来源: " , "URL"                , borderLight) ,
+    LabeledInput("类型: ", "Type", borderLight),
+    LabeledInput("型号: ", "Specification", borderLight),
+    LabeledInput("归属: ", "Red/Blue", borderLight),
+    LabeledInput("数量: ", "number", borderLight),
+    LabeledInput("状态: ", "Destoryed/Captured", borderLight),
+    LabeledInput("来源: ", "URL", borderLight),
 };
 
 Component deleteIdInput = LabeledInput("目标ID: ", "number");
@@ -24,7 +24,7 @@ auto insertButton = Button("执行", [] {
   static std::string inserts[6];
   std::transform(
       labeledInputs.begin(), labeledInputs.end(), inserts,
-      [](Component& input) {
+      [](Component &input) {
         return std::dynamic_pointer_cast<LabeledInputBase>(input)->GetInput();
       });
   Database::InsertRecord(inserts);

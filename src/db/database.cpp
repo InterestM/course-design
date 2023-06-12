@@ -1,3 +1,4 @@
+
 #include "db/database.hpp"
 
 #include <string>
@@ -33,7 +34,6 @@ bool Database::Init() {
 void Database::QueryRecord() {
   std::vector<std::vector<std::string>> table = {Database::title};
   try {
-    SQLite::Transaction transaction(Database::db);
     SQLite::Statement query(Database::db, "SELECT * FROM data");
     while (query.executeStep()) {
       std::vector<std::string> tmp;
@@ -41,7 +41,6 @@ void Database::QueryRecord() {
         tmp.push_back(query.getColumn(i));
       table.push_back(tmp);
     }
-    transaction.commit();
   } catch (std::exception &e) {
     table = std::vector<std::vector<std::string>>{
         {"something unexpected happened while loading"}};
@@ -54,23 +53,22 @@ void Database::QueryRecord(const std::string &s_type, const std::string &s_spec,
                            const std::string &s_status) {
   std::vector<std::vector<std::string>> table = {Database::title};
   try {
-    SQLite::Transaction transaction(Database::db);
     SQLite::Statement query(
         Database::db,
         "SELECT * FROM data WHERE type LIKE ? AND specification LIKE ? AND "
         "adscription LIKE ? AND status LIKE ?");
     if (s_type.length() > 0) {
-      query.bind(1, s_type);
+      query.bind(1, "%" + s_type + "%");
     } else {
       query.bind(1, "%");
     }
     if (s_spec.length() > 0) {
-      query.bind(2, s_spec + "%");
+      query.bind(2, "%" + s_spec + "%");
     } else {
       query.bind(2, "%");
     }
     if (s_ads.length() > 0) {
-      query.bind(3, s_ads);
+      query.bind(3, "%" + s_ads + "%");
     } else {
       query.bind(3, "%");
     }
@@ -85,7 +83,6 @@ void Database::QueryRecord(const std::string &s_type, const std::string &s_spec,
         tmp.push_back(query.getColumn(i));
       table.push_back(tmp);
     }
-    transaction.commit();
   } catch (std::exception &e) {
     table = std::vector<std::vector<std::string>>{
         {"something unexpected happened while loading"}};
@@ -93,26 +90,73 @@ void Database::QueryRecord(const std::string &s_type, const std::string &s_spec,
   Database::data = table;
 }
 
-std::vector<std::vector<std::string>> Database::LoadRecord() { return Database::data; }
+std::vector<std::vector<std::string>> Database::LoadRecord() {
+  return Database::data;
+}
 
 void Database::InsertRecord(const std::string (&tmp)[6]) {
-  SQLite::Transaction transaction(Database::db);
-  SQLite::Statement query{
-      Database::db,
-      "INSERT INTO data "
-      "(id,type,specification,adscription,amount,status,source) "
-      "VALUES (NULL,?,?,?,?,?,?)"};
-  for (int i = 1; i < Database::title.size(); i++) {
-    query.bind(i, tmp[i - 1]);
+  try {
+    SQLite::Transaction transaction(Database::db);
+    SQLite::Statement query{
+        Database::db,
+        "INSERT INTO data "
+        "(id,type,specification,adscription,amount,status,source) "
+        "VALUES (NULL,?,?,?,?,?,?)"};
+    for (int i = 1; i < Database::title.size(); i++) {
+      query.bind(i, tmp[i - 1]);
+    }
+    query.exec();
+    transaction.commit();
+  } catch (std::exception &e) {
+      Database::data = {{"something unexpected happened while Inserting"}};
   }
-  query.exec();
-  transaction.commit();
 }
 
 void Database::DeleteRecord(const std::string &id) {
-  SQLite::Transaction transaction(Database::db);
-  SQLite::Statement query{Database::db, "DELETE FROM data WHERE ID = ?;"};
-  query.bind(1, id);
-  query.exec();
-  transaction.commit();
+  try {
+    SQLite::Transaction transaction(Database::db);
+    SQLite::Statement query{Database::db, "DELETE FROM data WHERE ID = ?;"};
+    query.bind(1, id);
+    query.exec();
+    transaction.commit();
+  } catch (std::exception &e) {
+      Database::data = {{"something unexpected happened while Deleting"}};
+  }
+}
+
+int Database::CalcSum() {
+  try {
+    return Database::db.execAndGet("SELECT sum(amount) FROM data");
+  } catch (std::exception &e) {
+    return 0;
+  }
+}
+
+int Database::CalcSum(const std::string targetType,
+                      const std::string targetADS) {
+  try {
+    SQLite::Statement query{
+        Database::db,
+        "SELECT sum(amount) FROM data WHERE type LIKE ? AND "
+        "adscription LIKE ?"};
+    query.bind(1, targetType);
+    query.bind(2, targetADS);
+    query.exec();
+    return query.getColumn(0);
+  } catch (std::exception &e) {
+    return -1;
+  }
+}
+
+std::vector<std::string> Database::QueryType() {
+  std::vector<std::string> types;
+  try {
+    SQLite::Statement query{Database::db, "SELECT DISTINCT type FROM data"};
+    while (query.executeStep()) {
+      types.push_back(query.getColumn(0));
+    }
+  } catch (std::exception &e) {
+    return {"something unexpected happened while QueryType"};
+  }
+  return types;
 }

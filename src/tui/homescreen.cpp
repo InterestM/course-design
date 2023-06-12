@@ -1,8 +1,10 @@
 #include "ftxui/component/component.hpp" // for Checkbox, Renderer, Horizontal, Vertical, Input, Menu, Radiobox, ResizableSplitLeft, Tab
 #include "ftxui/screen/color.hpp" // for Color, Color::BlueLight, Color::RedLight, Color::Black, Color::Blue, Color::Cyan, Color::CyanLight, Color::GrayDark, Color::GrayLight, Color::Green, Color::GreenLight, Color::Magenta, Color::MagentaLight, Color::Red, Color::White, Color::Yellow, Color::YellowLight, Color::Default, Color::Palette256, ftxui
+#include <db/database.hpp>
 #include <ftxui/component/component_base.hpp>
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/dom/node.hpp>
+#include <string>
 
 using namespace ftxui;
 
@@ -15,42 +17,38 @@ Component homescreen = Renderer([] {
           text("◥⊙ ▲⊙ ▲⊙ ▲⊙ ▲⊙ ▲⊙ ▲⊙◤..."),
       }),
   });
-  //-----------------------------------------------------
-  // Query and present the loss comparison of existing equipment types
-  //-----------------------------------------------------
+  //-----------------------------------------------
+  // fixing
+  //-----------------------------------------------
   auto container = Container::Vertical({});
+  std::vector<std::string> types = Database::QueryType();
+  int sum = {Database::CalcSum()};
 
-  container->Add(Renderer([] {
-    return hbox({
-               gauge(0.2) | color(Color::Blue),
-               text("300"),
-               text(" Tank ") | hcenter,
-               text("400"),
-               gaugeLeft(0.3) | color(Color ::Red),
-           }) |
-           flex;
-  }));
-  container->Add(Renderer([] {
-    return hbox({
-               gauge(0.5) | color(Color::Blue),
-               text("750"),
-               text(" Infantry Fighting Vehicles ") | hcenter,
-               text("1200"),
-               gaugeLeft(0.8) | color(Color ::Red),
-           }) |
-           flex;
-  }));
+  for (auto i = types.begin(); i != types.end(); ++i) {
+    std::string str = "tank";
+    int blueNum = {Database::CalcSum(str, "BLUE")};
+    container->Add(Renderer([&] {
+      return hbox({
+                 gauge(1.0 * blueNum / sum) | color(Color::Blue),
+                 text(std::to_string(blueNum)), text(str) | hcenter,
+                 // text(std::to_string(Database::CalcSum(str, "RED"))),
+                 //  gaugeLeft(1.0 * Database::CalcSum(str, "RED") / sum) |
+                 //  color(Color ::Red),
+             }) |
+             flex;
+    }));
+  }
 
   return vbox({
       vbox({
           tank | hcenter,
           text("Open Source Information Management System for Equipment Loss "
-               "in Armed Conflict") | hcenter | bold,
+               "in Armed Conflict") |
+              hcenter | bold,
       }) | borderRounded,
       text("Losses") | underlined | hcenter,
-      hbox({text("Red") | border, filler(), text("Blue") | border}),
+      hbox({text("Blue") | border, filler(), text("Red") | border}),
       separatorDashed(),
       container->Render(),
-
   });
 });
