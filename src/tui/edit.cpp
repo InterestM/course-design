@@ -3,7 +3,7 @@
 #include <ftxui/dom/elements.hpp>
 #include <memory>
 
-#include "data/database.hpp"
+#include "db/database.hpp"
 #include "ftxui/component/component.hpp"
 #include "ftxui/screen/color.hpp"  // for Color, Color::Blue, Color::Cyan, Color::White, ftxui
 #include "tui/component/labeled_input.hpp"

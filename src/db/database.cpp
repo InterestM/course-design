@@ -1,51 +1,63 @@
-#include "SQLiteCpp/Database.h"
-#include "SQLiteCpp/SQLiteCpp.h"
-#include "SQLiteCpp/Statement.h"
-#include "data/database.hpp"
+#include "db/database.hpp"
+
 #include <string>
 #include <vector>
 
-void Database::QueryRecord() {
-  std::vector<std::vector<std::string>> file = {
-      {"ID", "类型", "型号", "归属", "数量", "状态", "来源"}};
-  try {
-    SQLite::Database db("data.db3",
-                        SQLite::OPEN_CREATE | SQLite::OPEN_READWRITE);
-    SQLite::Transaction transaction(db);
-    db.exec("CREATE TABLE IF NOT EXISTS data (id INTEGER PRIMARY KEY "
-            "AUTOINCREMENT,type TEXT,specification TEXT,adscription "
-            "TEXT,amout INTEGER,status TEXT,evidence TEXT)");
+#include "SQLiteCpp/Database.h"
+#include "SQLiteCpp/SQLiteCpp.h"
+#include "SQLiteCpp/Statement.h"
 
+const std::vector<std::string> Database::title = {
+    "ID", "类型", "型号", "归属", "数量", "状态", "来源"};
+
+SQLite::Database Database::db{"data.db3",
+                              SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE};
+std::vector<std::vector<std::string>> Database::data{};
+
+bool Database::Init() {
+  try {
+    SQLite::Transaction transaction(db);
+    db.exec(
+        "CREATE TABLE IF NOT EXISTS data (id INTEGER PRIMARY KEY "
+        "AUTOINCREMENT,type TEXT,specification TEXT,adscription "
+        "TEXT,amout INTEGER,status TEXT,evidence TEXT)");
+    transaction.commit();
+  } catch (std::exception &e) {
+    return false;
+  }
+
+  data = {title};
+  return true;
+}
+
+void Database::QueryRecord() {
+  std::vector<std::vector<std::string>> table = {title};
+  try {
+    SQLite::Transaction transaction(db);
     SQLite::Statement query(db, "SELECT * FROM data");
     while (query.executeStep()) {
       std::vector<std::string> tmp;
-      for (int i = 0; i < 7; i++)
-        tmp.push_back(query.getColumn(i));
-      file.push_back(tmp);
+      for (int i = 0; i < title.size(); i++) tmp.push_back(query.getColumn(i));
+      table.push_back(tmp);
     }
     transaction.commit();
   } catch (std::exception &e) {
-    file = std::vector<std::vector<std::string>>{
+    table = std::vector<std::vector<std::string>>{
         {"something unexpected happened while loading"}};
   }
-  data = file;
+  data = table;
 }
 
 void Database::QueryRecord(const std::string &s_type, const std::string &s_spec,
                            const std::string &s_ads,
                            const std::string &s_status) {
-  std::vector<std::vector<std::string>> file = {
-      {"ID", "类型", "型号", "归属", "数量", "状态", "来源"}};
+  std::vector<std::vector<std::string>> table = {title};
   try {
-    SQLite::Database db("data.db3",
-                        SQLite::OPEN_CREATE | SQLite::OPEN_READWRITE);
     SQLite::Transaction transaction(db);
-    db.exec("CREATE TABLE IF NOT EXISTS data (id INTEGER PRIMARY KEY "
-            "AUTOINCREMENT,type TEXT,specification TEXT,adscription "
-            "TEXT,amout INTEGER,status TEXT,evidence TEXT)");
     SQLite::Statement query(
-        db, "SELECT * FROM data WHERE type LIKE ? AND specification LIKE ? AND "
-            "adscription LIKE ? AND status LIKE ?");
+        db,
+        "SELECT * FROM data WHERE type LIKE ? AND specification LIKE ? AND "
+        "adscription LIKE ? AND status LIKE ?");
     if (s_type.length() > 0) {
       query.bind(1, s_type);
     } else {
@@ -68,36 +80,34 @@ void Database::QueryRecord(const std::string &s_type, const std::string &s_spec,
     }
     while (query.executeStep()) {
       std::vector<std::string> tmp;
-      for (int i = 0; i < 7; i++)
-        tmp.push_back(query.getColumn(i));
-      file.push_back(tmp);
+      for (int i = 0; i < title.size(); i++) tmp.push_back(query.getColumn(i));
+      table.push_back(tmp);
     }
     transaction.commit();
   } catch (std::exception &e) {
-    file = std::vector<std::vector<std::string>>{
+    table = std::vector<std::vector<std::string>>{
         {"something unexpected happened while loading"}};
   }
-  data = file;
+  data = table;
 }
 
 std::vector<std::vector<std::string>> Database::LoadRecord() { return data; }
 
 void Database::InsertRecord(const std::string (&tmp)[6]) {
-  SQLite::Database db("data.db3", SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
   SQLite::Transaction transaction(db);
   SQLite::Statement query{
-      db, "INSERT INTO data "
-          "(id,type,specification,adscription,amout,status,evidence) "
-          "VALUES (NULL,?,?,?,?,?,?)"};
-  for (int i = 0; i < 6; i++) {
-    query.bind(i + 1, tmp[i]);
+      db,
+      "INSERT INTO data "
+      "(id,type,specification,adscription,amout,status,evidence) "
+      "VALUES (NULL,?,?,?,?,?,?)"};
+  for (int i = 1; i < title.size(); i++) {
+    query.bind(i, tmp[i - 1]);
   }
   query.exec();
   transaction.commit();
 }
 
 void Database::DeleteRecord(const std::string &id) {
-  SQLite::Database db("data.db3", SQLite::OPEN_READWRITE);
   SQLite::Transaction transaction(db);
   SQLite::Statement query{db, "DELETE FROM data WHERE ID = ?;"};
   query.bind(1, id);

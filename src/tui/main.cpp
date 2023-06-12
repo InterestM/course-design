@@ -1,12 +1,15 @@
-#include <chrono> // for operator""ms, literals
+#include <chrono>  // for operator""ms, literals
 #include <ftxui/dom/elements.hpp>
-#include <thread> // for sleep_for, thread
+#include <thread>  // for sleep_for, thread
 
-#include "ftxui/component/component.hpp" // for Checkbox, Renderer, Horizontal, Vertical, Input, Menu, Radiobox, ResizableSplitLeft, Tab
-#include "ftxui/component/screen_interactive.hpp" // for Component, ScreenInteractive
+#include "db/database.hpp"
+#include "ftxui/component/component.hpp"  // for Checkbox, Renderer, Horizontal, Vertical, Input, Menu, Radiobox, ResizableSplitLeft, Tab
+#include "ftxui/component/screen_interactive.hpp"  // for Component, ScreenInteractive
 #include "tui/tabs.hpp"
 
 int main(int argc, char *argv[]) {
+  Database::Init();
+
   using namespace ftxui;
   auto screen = ScreenInteractive::Fullscreen();
   int shift = 0;
