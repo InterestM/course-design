@@ -20,7 +20,7 @@ bool Database::Init() {
     SQLite::Transaction transaction(db);
     db.exec("CREATE TABLE IF NOT EXISTS data (id INTEGER PRIMARY KEY "
             "AUTOINCREMENT,type TEXT,specification TEXT,adscription "
-            "TEXT,amout INTEGER,status TEXT,evidence TEXT)");
+            "TEXT,amount INTEGER,status TEXT,evidence TEXT)");
     transaction.commit();
   } catch (std::exception &e) {
     return false;
