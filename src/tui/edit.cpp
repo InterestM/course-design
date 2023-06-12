@@ -5,7 +5,7 @@
 
 #include "data/database.hpp"
 #include "ftxui/component/component.hpp"
-#include "ftxui/screen/color.hpp"  // for Color, Color::Blue, Color::Cyan, Color::White, ftxui
+#include "ftxui/screen/color.hpp" // for Color, Color::Blue, Color::Cyan, Color::White, ftxui
 #include "tui/component/labeled_input.hpp"
 using namespace ftxui;
 
@@ -24,7 +24,7 @@ auto insertButton = Button("执行", [] {
   static std::string inserts[6];
   std::transform(
       labeledInputs.begin(), labeledInputs.end(), inserts,
-      [](Component& input) {
+      [](Component &input) {
         return std::dynamic_pointer_cast<LabeledInputBase>(input)->GetInput();
       });
   Database::InsertRecord(inserts);
@@ -49,8 +49,10 @@ auto editComponent = Container::Horizontal({
 auto edits = Renderer(editComponent, [] {
   return vbox({
       vbox({
-          window(text("添加记录"), labeledInputsComponent->Render()),
-          insertButton->Render()
+          window(text("添加记录"), vbox({
+                                       labeledInputsComponent->Render(),
+                                       insertButton->Render(),
+                                   })),
       }) | hcenter,
       hbox({
           window(text("删除记录"), deleteIdInput->Render()),

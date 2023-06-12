@@ -14,6 +14,8 @@ public:
                           const std::string &, const std::string &);
   static void InsertRecord(const std::string (&)[6]);
   static void DeleteRecord(const std::string &);
-  static int calcSum(const std::string);
+  static int CalcSum();
+  static int CalcSum(const std::string, const std::string);
+  static std::vector<std::string> QueryType();
 };
 #endif // !OPERATE_HPP

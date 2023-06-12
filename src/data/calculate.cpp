@@ -1,9 +1,0 @@
-#include "SQLiteCpp/Database.h"
-#include "data/database.hpp"
-
-int Database::calcSum(const std::string target) {
-  SQLite::Database db("data.db3", SQLite::OPEN_READONLY);
-
-  return db.execAndGet("SELECT SUM(amount) FROM data WHERE type LIKE '" +
-                       target + "'");
-}
