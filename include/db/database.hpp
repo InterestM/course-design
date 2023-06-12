@@ -2,6 +2,7 @@
 #define _DATABASE_HPP
 
 #include "SQLiteCpp/Database.h"
+
 #include <string>
 #include <vector>
 

@@ -1,12 +1,14 @@
 #include <algorithm>
-#include <ftxui/component/component_base.hpp>
-#include <ftxui/dom/elements.hpp>
 #include <memory>
 
-#include "db/database.hpp"
 #include "ftxui/component/component.hpp"
+#include "ftxui/component/component_base.hpp"
+#include "ftxui/dom/elements.hpp"
 #include "ftxui/screen/color.hpp" // for Color, Color::Blue, Color::Cyan, Color::White, ftxui
+
+#include "db/database.hpp"
 #include "tui/component/labeled_input.hpp"
+
 using namespace ftxui;
 
 std::vector<Component> labeledInputs = {

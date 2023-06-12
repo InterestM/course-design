@@ -1,15 +1,16 @@
-#include <ftxui/component/component_base.hpp>
-#include <ftxui/dom/elements.hpp>
-#include <string>  // for basic_string, allocator, string
-#include <vector>  // for vector
+#include <string> // for basic_string, allocator, string
+#include <vector> // for vector
 
 #include "db/database.hpp"
-#include "ftxui/component/component.hpp"
-#include "ftxui/dom/node.hpp"   // for Render
-#include "ftxui/dom/table.hpp"  // for Table, TableSelection
-#include "ftxui/screen/color.hpp"  // for Color, Color::Blue, Color::Cyan, Color::White, ftxui
-#include "ftxui/screen/screen.hpp"  // for Screen
 #include "tui/component/labeled_input.hpp"
+
+#include "ftxui/component/component.hpp"
+#include "ftxui/component/component_base.hpp"
+#include "ftxui/dom/elements.hpp"
+#include "ftxui/dom/node.hpp"  //for Render
+#include "ftxui/dom/table.hpp" // for Table, TableSelection
+#include "ftxui/screen/color.hpp" // for Color, Color::Blue, Color::Cyan, Color::White, ftxui
+#include "ftxui/screen/screen.hpp" // for Screen
 
 using namespace ftxui;
 
@@ -23,7 +24,7 @@ std::vector<ftxui::Component> labeledInputs = {
 };
 
 class Tables {
- public:
+public:
   static inline Table data;
   Tables() {
     Database::QueryRecord();
@@ -67,7 +68,7 @@ auto labeledInputsComponent = Container::Horizontal(labeledInputs);
 auto queryComponent =
     Container::Horizontal({labeledInputsComponent, queryButton});
 
-}  // namespace
+} // namespace
 
 auto records = Renderer(queryComponent, [] {
   table.load();

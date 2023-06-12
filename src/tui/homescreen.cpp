@@ -1,10 +1,12 @@
-#include "ftxui/component/component.hpp" // for Checkbox, Renderer, Horizontal, Vertical, Input, Menu, Radiobox, ResizableSplitLeft, Tab
-#include "ftxui/screen/color.hpp" // for Color, Color::BlueLight, Color::RedLight, Color::Black, Color::Blue, Color::Cyan, Color::CyanLight, Color::GrayDark, Color::GrayLight, Color::Green, Color::GreenLight, Color::Magenta, Color::MagentaLight, Color::Red, Color::White, Color::Yellow, Color::YellowLight, Color::Default, Color::Palette256, ftxui
-#include <db/database.hpp>
-#include <ftxui/component/component_base.hpp>
-#include <ftxui/dom/elements.hpp>
-#include <ftxui/dom/node.hpp>
 #include <string>
+
+#include <db/database.hpp>
+
+#include "ftxui/component/component.hpp" // for Checkbox, Renderer, Horizontal, Vertical, Input, Menu, Radiobox, ResizableSplitLeft, Tab
+#include "ftxui/component/component_base.hpp"
+#include "ftxui/dom/elements.hpp"
+#include "ftxui/dom/node.hpp"
+#include "ftxui/screen/color.hpp" // for Color, Color::BlueLight, Color::RedLight, Color::Black, Color::Blue, Color::Cyan, Color::CyanLight, Color::GrayDark, Color::GrayLight, Color::Green, Color::GreenLight, Color::Magenta, Color::MagentaLight, Color::Red, Color::White, Color::Yellow, Color::YellowLight, Color::Default, Color::Palette256, ftxui
 
 using namespace ftxui;
 
@@ -31,7 +33,7 @@ Component homescreen = Renderer([] {
       return hbox({
                  gauge(1.0 * blueNum / sum) | color(Color::Blue),
                  text(std::to_string(blueNum)), text(str) | hcenter,
-                 // text(std::to_string(Database::CalcSum(str, "RED"))),
+                 text(std::to_string(Database::CalcSum(str, "RED"))),
                  //  gaugeLeft(1.0 * Database::CalcSum(str, "RED") / sum) |
                  //  color(Color ::Red),
              }) |

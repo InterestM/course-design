@@ -1,11 +1,12 @@
-#include <chrono>  // for operator""ms, literals
-#include <ftxui/dom/elements.hpp>
-#include <thread>  // for sleep_for, thread
+#include <chrono> // for operator""ms, literals
+#include <thread> // for sleep_for, thread
 
 #include "db/database.hpp"
-#include "ftxui/component/component.hpp"  // for Checkbox, Renderer, Horizontal, Vertical, Input, Menu, Radiobox, ResizableSplitLeft, Tab
-#include "ftxui/component/screen_interactive.hpp"  // for Component, ScreenInteractive
 #include "tui/tabs.hpp"
+
+#include "ftxui/component/component.hpp" // for Checkbox, Renderer, Horizontal, Vertical, Input, Menu, Radiobox, ResizableSplitLeft, Tab
+#include "ftxui/component/screen_interactive.hpp" // for Component, ScreenInteractive
+#include <ftxui/dom/elements.hpp>
 
 int main(int argc, char *argv[]) {
   Database::Init();
