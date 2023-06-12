@@ -1,7 +1,6 @@
-#include "data/database.hpp"
 #include "ftxui/component/component.hpp" // for Checkbox, Renderer, Horizontal, Vertical, Input, Menu, Radiobox, ResizableSplitLeft, Tab
 #include "ftxui/screen/color.hpp" // for Color, Color::BlueLight, Color::RedLight, Color::Black, Color::Blue, Color::Cyan, Color::CyanLight, Color::GrayDark, Color::GrayLight, Color::Green, Color::GreenLight, Color::Magenta, Color::MagentaLight, Color::Red, Color::White, Color::Yellow, Color::YellowLight, Color::Default, Color::Palette256, ftxui
-#include <data/database.hpp>
+#include <db/database.hpp>
 #include <ftxui/component/component_base.hpp>
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/dom/node.hpp>
@@ -18,7 +17,9 @@ Component homescreen = Renderer([] {
           text("◥⊙ ▲⊙ ▲⊙ ▲⊙ ▲⊙ ▲⊙ ▲⊙◤..."),
       }),
   });
-
+  //-----------------------------------------------
+  // fixing
+  //-----------------------------------------------
   auto container = Container::Vertical({});
   std::vector<std::string> types = Database::QueryType();
   int sum = {Database::CalcSum()};

@@ -3,7 +3,7 @@
 #include <string>  // for basic_string, allocator, string
 #include <vector>  // for vector
 
-#include "data/database.hpp"
+#include "db/database.hpp"
 #include "ftxui/component/component.hpp"
 #include "ftxui/dom/node.hpp"   // for Render
 #include "ftxui/dom/table.hpp"  // for Table, TableSelection

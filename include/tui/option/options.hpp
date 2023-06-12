@@ -1,5 +1,5 @@
-#ifndef OPTION_HPP
-#define OPTION_HPP
+#ifndef _OPTION_HPP
+#define _OPTION_HPP
 
 #include "ftxui/component/component.hpp"  // for Menu, Renderer, Vertical
 

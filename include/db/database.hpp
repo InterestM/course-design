@@ -1,11 +1,15 @@
-#ifndef OPERATE_HPP
-#define OPERATE_HPP
+#ifndef _DATABASE_HPP
+#define _DATABASE_HPP
 
+#include "SQLiteCpp/Database.h"
 #include <string>
 #include <vector>
 
 class Database {
-  static inline std::vector<std::vector<std::string>> data;
+private:
+  static std::vector<std::vector<std::string>> data;
+  static const std::vector<std::string> title;
+  static SQLite::Database db;
 
 public:
   static std::vector<std::vector<std::string>> LoadRecord();
@@ -17,5 +21,6 @@ public:
   static int CalcSum();
   static int CalcSum(const std::string, const std::string);
   static std::vector<std::string> QueryType();
+  static bool Init();
 };
-#endif // !OPERATE_HPP
+#endif
