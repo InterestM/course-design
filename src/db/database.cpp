@@ -99,8 +99,6 @@ std::vector<std::vector<std::string>> Database::LoadRecord() { return data; }
 
 void Database::InsertRecord(const std::string (&tmp)[6]) {
   try {
-    SQLite::Database db("data.db3",
-                        SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
     SQLite::Transaction transaction(db);
     SQLite::Statement query{
         db, "INSERT INTO data "
@@ -118,7 +116,6 @@ void Database::InsertRecord(const std::string (&tmp)[6]) {
 
 void Database::DeleteRecord(const std::string &id) {
   try {
-    SQLite::Database db("data.db3", SQLite::OPEN_READWRITE);
     SQLite::Transaction transaction(db);
     SQLite::Statement query{db, "DELETE FROM data WHERE ID = ?;"};
     query.bind(1, id);
@@ -131,17 +128,15 @@ void Database::DeleteRecord(const std::string &id) {
 
 int Database::CalcSum() {
   try {
-    SQLite::Database db("data.db3", SQLite::OPEN_READONLY);
     return db.execAndGet("SELECT sum(amount) FROM data ");
   } catch (std::exception &e) {
     return 0;
   }
 }
 
-int Database::CalcSum(const std::string targetType,
-                      const std::string targetADS) {
+int Database::CalcSum(const std::string &targetType,
+                      const std::string &targetADS) {
   try {
-    SQLite::Database db("data.db3", SQLite::OPEN_READONLY);
     SQLite::Statement query{
         db, "SELECT sum(amount) FROM data WHERE type LIKE ? AND "
             "adscription LIKE ?"};
@@ -157,7 +152,6 @@ int Database::CalcSum(const std::string targetType,
 std::vector<std::string> Database::QueryType() {
   std::vector<std::string> types;
   try {
-    SQLite::Database db("data.db3", SQLite::OPEN_READONLY);
     SQLite::Statement query{db, "SELECT DISTINCT type FROM data"};
     while (query.executeStep()) {
       types.push_back(query.getColumn(0));
