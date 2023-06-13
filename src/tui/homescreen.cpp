@@ -52,7 +52,8 @@ Component homescreen = Renderer([] {
           text("Open Source Information Management System for Equipment Loss "
                "in Armed Conflict") |
               hcenter | bold,
-      }) | borderRounded,
+      }) | borderRounded |
+          color(Color::NavajoWhite1),
       text("Losses") | underlined | hcenter,
       hbox({
           text("Blue") | color(Color::Blue) | bold,

@@ -1,9 +1,9 @@
-#include "ftxui/component/component.hpp"         // for Menu, Renderer, Vertical
-#include "ftxui/component/component_options.hpp" // for MenuOption, UnderlineOption
+#include <ftxui/component/component.hpp>         // for Menu, Renderer, Vertical
+#include <ftxui/component/component_options.hpp> // for MenuOption, UnderlineOption
 
-#include "tui/option/options.hpp"
 #include "tui/edit.hpp"
 #include "tui/homescreen.hpp"
+#include "tui/option/options.hpp"
 #include "tui/query.hpp"
 #include "tui/setting.hpp"
 
@@ -33,7 +33,7 @@ auto main_container = Container::Vertical({
     tab_content | flex,
 });
 
-}
+} // namespace
 
 auto main_renderer = Renderer(main_container, [] {
   return vbox({
