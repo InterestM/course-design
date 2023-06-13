@@ -40,7 +40,6 @@ static ftxui::Table GetTable() {
                  });
   ftxui::Table table(recordRows);
 
-  // data = ftxui::Table(Database::LoadRecord());
   table.SelectAll().Border(LIGHT);
 
   // Add border around the first column.
@@ -52,15 +51,14 @@ static ftxui::Table GetTable() {
   table.SelectRow(0).Border(DOUBLE);
 
   // Align right the "Release date" column.
-  table.SelectColumn(2).DecorateCells(center);
   table.SelectColumn(5).DecorateCells(center);
 
   // Select row from the second to the last.
-  auto content = table.SelectRows(1, -1);
+  auto content = table.SelectColumns(1, -1);
   // Alternate in between 3 colors.
-  content.DecorateCellsAlternateRow(color(Color::Blue), 3, 0);
-  content.DecorateCellsAlternateRow(color(Color::Cyan), 3, 1);
-  content.DecorateCellsAlternateRow(color(Color::White), 3, 2);
+  content.DecorateCellsAlternateColumn(color(Color::NavajoWhite1), 3, 0);
+  content.DecorateCellsAlternateColumn(color(Color::RedLight), 3, 1);
+  content.DecorateCellsAlternateColumn(color(Color::Blue), 3, 2);
 
   return table;
 };
