@@ -4,6 +4,8 @@
 
 #include "db/database.hpp"
 #include "tui/component/labeled_input.hpp"
+#include "tui/edit.hpp"
+#include "tui/query.hpp"
 
 #include "ftxui/component/component.hpp"
 #include "ftxui/component/component_base.hpp"
@@ -14,14 +16,15 @@
 #include "ftxui/screen/screen.hpp" // for Screen
 
 using namespace ftxui;
-
+int depth; // There are two layers. One at depth = 0 and the modal
+           // window at depth = 1;
 namespace {
-
+// At depth=0, Data Browser
 std::vector<ftxui::Component> labeledInputs = {
-    LabeledInput("类型: ", "Type"),
-    LabeledInput("型号: ", "Specification"),
-    LabeledInput("归属: ", "Red/Blue"),
-    LabeledInput("状态: ", "Destoryed/Captured"),
+    LabeledInput(" 类型: ", "Type"),
+    LabeledInput(" 型号: ", "Specification"),
+    LabeledInput(" 归属: ", "Red/Blue"),
+    LabeledInput(" 状态: ", "Destoryed/Captured"),
 };
 
 static ftxui::Table GetTable() {
@@ -62,7 +65,6 @@ static ftxui::Table GetTable() {
 
   return table;
 };
-
 auto queryButton = Button("查询", [] {
   Database::QueryRecord(
       std::dynamic_pointer_cast<LabeledInputBase>(labeledInputs[0])->GetInput(),
@@ -71,23 +73,49 @@ auto queryButton = Button("查询", [] {
       std::dynamic_pointer_cast<LabeledInputBase>(labeledInputs[3])
           ->GetInput());
 });
-
+auto button_open = Button("open", [] { depth = 1; });
 auto labeledInputsComponent = Container::Horizontal(labeledInputs);
 auto queryComponent =
-    Container::Horizontal({labeledInputsComponent, queryButton});
+    Container::Horizontal({button_open, labeledInputsComponent, queryButton});
 
+Component depth_0_renderer = Renderer(queryComponent, [] {
+  return vbox({
+             button_open->Render(),
+             hbox({window(text("条件"), labeledInputsComponent->Render()),
+                   queryButton->Render()}) |
+                 hcenter,
+             GetTable().Render(),
+         }) |
+         vscroll_indicator | frame | size(HEIGHT, LESS_THAN, 60) | hcenter;
+});
+
+// At depth=1, DataEdit modals
+auto button_quit = Button("quit", [] { depth = 0; });
+
+auto editComponet = Container::Horizontal({button_quit});
+Component depth_1_renderer = Renderer(editComponet, [] {
+  return vbox({
+             text("hey"),
+             hbox({editComponet->Render()}),
+         }) |
+         border;
+});
+auto main_container = Container::Tab(
+    {
+        depth_0_renderer,
+        depth_1_renderer,
+    },
+    &depth);
 } // namespace
 
-auto records = Renderer(queryComponent, [] {
-  return vbox({
-      vbox({
-          hbox({window(text("条件"), labeledInputsComponent->Render()),
-                queryButton->Render()}) |
-              hcenter,
+Component records = Renderer(main_container, [] {
+  Element document = depth_0_renderer->Render();
 
-          GetTable().Render(),
-          Button("END", {}, ButtonOption::Ascii())->Render() | hcenter,
-      }) | vscroll_indicator |
-          frame | size(HEIGHT, LESS_THAN, 60) | hcenter,
-  });
+  if (depth == 1) {
+    document = dbox({
+        document,
+        depth_1_renderer->Render() | clear_under | center,
+    });
+  }
+  return document;
 });

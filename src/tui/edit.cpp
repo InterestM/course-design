@@ -11,7 +11,7 @@
 #include "ftxui/screen/color.hpp" // for Color, Color::Blue, Color::Cyan, Color::White, ftxui
 
 using namespace ftxui;
-
+namespace {
 std::vector<Component> labeledInputs = {
     LabeledInput("类型: ", "Type", borderLight),
     LabeledInput("型号: ", "Specification", borderLight),
@@ -63,6 +63,7 @@ auto editComponent = Container::Horizontal({
     deleteIdInput,
     deleteButton,
 });
+} // namespace
 
 auto edits = Renderer(editComponent, [] {
   return vbox({
