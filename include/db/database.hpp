@@ -1,24 +1,26 @@
 #ifndef _DATABASE_HPP
 #define _DATABASE_HPP
 
-#include "SQLiteCpp/Database.h"
-
 #include <string>
 #include <vector>
 
+#include "SQLiteCpp/Database.h"
+#include "data/record.hpp"
+
 class Database {
 private:
-  static std::vector<std::vector<std::string>> data;
-  static const std::vector<std::string> title;
   static SQLite::Database db;
+  static std::vector<Record> *cache;
+  static void UpdateCache();
 
 public:
-  static std::vector<std::vector<std::string>> LoadRecord();
-  static void QueryRecord();
-  static void QueryRecord(const std::string &, const std::string &,
-                          const std::string &, const std::string &);
-  static void InsertRecord(const std::string (&)[6]);
-  static void DeleteRecord(const std::string &);
+  static std::vector<Record> QueryRecord();
+  static std::vector<Record> QueryRecord(const std::string &s_type,
+                                         const std::string &s_spec,
+                                         const std::string &s_ads,
+                                         const std::string &s_status);
+  static void InsertRecord(const Record &record);
+  static void DeleteRecord(int id);
   static int CalcSum();
   static int CalcSum(const std::string &, const std::string &);
   static std::vector<std::string> QueryType();

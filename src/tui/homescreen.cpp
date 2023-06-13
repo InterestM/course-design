@@ -26,18 +26,18 @@ Component homescreen = Renderer([] {
   std::vector<std::string> types = Database::QueryType();
   int sum = {Database::CalcSum()};
 
-  for (auto i = types.begin(); i != types.end(); ++i) {
-    std::string str = "tank";
-    int blueNum = {Database::CalcSum(str, "BLUE")};
+  for (int i = 0; i < types.size(); i++) {
     container->Add(Renderer([&] {
+      // int blueNum = {Database::CalcSum(str, "BLUE")};
       return hbox({
-                 gauge(1.0 * blueNum / sum) | color(Color::Blue),
-                 text(std::to_string(blueNum)), text(str) | hcenter,
-                 text(std::to_string(Database::CalcSum(str, "RED"))),
-                 //  gaugeLeft(1.0 * Database::CalcSum(str, "RED") / sum) |
-                 //  color(Color ::Red),
-             }) |
-             flex;
+          // gauge(1.0 * blueNum / sum) | color(Color::Blue),
+          // text(std::to_string(blueNum)),
+          text(types[i]) | hcenter,
+          // text(std::to_string(Database::CalcSum(str, "RED"))),
+          // gaugeLeft(1.0 * Database::CalcSum(str, "RED") / sum) |
+          //    color(Color ::Red),
+      }); //|
+          // flex;
     }));
   }
 

@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <string> // for basic_string, allocator, string
 #include <vector> // for vector
 
@@ -23,37 +24,46 @@ std::vector<ftxui::Component> labeledInputs = {
     LabeledInput("状态: ", "Destoryed/Captured"),
 };
 
-class Tables {
-public:
-  static inline Table data;
-  Tables() {
-    Database::QueryRecord();
-    load();
-  }
-  void load() {
-    data = Table(Database::LoadRecord());
-    data.SelectAll().Border(LIGHT);
+static ftxui::Table GetTable() {
+  std::vector<std::vector<std::string>> recordRows = {
+      {"ID", "类型", "型号", "归属", "数量", "状态", "来源"}};
+  auto records = Database::QueryRecord();
+  std::transform(records.begin(), records.end(), std::back_inserter(recordRows),
+                 [](const Record &record) -> std::vector<std::string> {
+                   return {std::to_string(record.getId()),
+                           record.getType(),
+                           record.getSpecification(),
+                           record.getAdscription(),
+                           std::to_string(record.getAmount()),
+                           record.getStatus(),
+                           record.getSource()};
+                 });
+  ftxui::Table table(recordRows);
 
-    // Add border around the first column.
-    data.SelectColumn(0).Border(LIGHT);
+  // data = ftxui::Table(Database::LoadRecord());
+  table.SelectAll().Border(LIGHT);
 
-    // Make first row bold with a double border.
-    data.SelectRow(0).Decorate(bold);
-    data.SelectRow(0).SeparatorVertical(LIGHT);
-    data.SelectRow(0).Border(DOUBLE);
+  // Add border around the first column.
+  table.SelectColumn(0).Border(LIGHT);
 
-    // Align right the "Release date" column.
-    data.SelectColumn(2).DecorateCells(center);
-    data.SelectColumn(5).DecorateCells(center);
+  // Make first row bold with a double border.
+  table.SelectRow(0).Decorate(bold);
+  table.SelectRow(0).SeparatorVertical(LIGHT);
+  table.SelectRow(0).Border(DOUBLE);
 
-    // Select row from the second to the last.
-    auto content = data.SelectRows(1, -1);
-    // Alternate in between 3 colors.
-    content.DecorateCellsAlternateRow(color(Color::Blue), 3, 0);
-    content.DecorateCellsAlternateRow(color(Color::Cyan), 3, 1);
-    content.DecorateCellsAlternateRow(color(Color::White), 3, 2);
-  };
-} table;
+  // Align right the "Release date" column.
+  table.SelectColumn(2).DecorateCells(center);
+  table.SelectColumn(5).DecorateCells(center);
+
+  // Select row from the second to the last.
+  auto content = table.SelectRows(1, -1);
+  // Alternate in between 3 colors.
+  content.DecorateCellsAlternateRow(color(Color::Blue), 3, 0);
+  content.DecorateCellsAlternateRow(color(Color::Cyan), 3, 1);
+  content.DecorateCellsAlternateRow(color(Color::White), 3, 2);
+
+  return table;
+};
 
 auto queryButton = Button("查询", [] {
   Database::QueryRecord(
@@ -71,9 +81,8 @@ auto queryComponent =
 } // namespace
 
 auto records = Renderer(queryComponent, [] {
-  table.load();
   return vbox({hbox({window(text("条件"), labeledInputsComponent->Render()),
                      queryButton->Render()}) |
                    hcenter,
-               table.data.Render() | hcenter});
+               GetTable().Render() | hcenter});
 });

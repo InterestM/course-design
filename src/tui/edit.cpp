@@ -1,13 +1,14 @@
 #include <algorithm>
+#include <exception>
 #include <memory>
+#include <string>
 
-#include "ftxui/component/component.hpp"
-#include "ftxui/component/component_base.hpp"
-#include "ftxui/dom/elements.hpp"
-#include "ftxui/screen/color.hpp" // for Color, Color::Blue, Color::Cyan, Color::White, ftxui
-
+#include "data/record.hpp"
 #include "db/database.hpp"
 #include "tui/component/labeled_input.hpp"
+
+#include "ftxui/component/component.hpp"
+#include "ftxui/screen/color.hpp" // for Color, Color::Blue, Color::Cyan, Color::White, ftxui
 
 using namespace ftxui;
 
@@ -29,14 +30,29 @@ auto insertButton = Button("执行", [] {
       [](Component &input) {
         return std::dynamic_pointer_cast<LabeledInputBase>(input)->GetInput();
       });
-  Database::InsertRecord(inserts);
-  Database::QueryRecord();
+  try {
+    Database::InsertRecord({
+        -1,
+        inserts[0],
+        inserts[1],
+        inserts[2],
+        std::stoi(inserts[3]),
+        inserts[4],
+        inserts[5],
+    });
+  } catch (std::exception) {
+    return;
+  }
 });
 
 auto deleteButton = Button("执行", [] {
-  Database::DeleteRecord(
-      std::dynamic_pointer_cast<LabeledInputBase>(deleteIdInput)->GetInput());
-  Database::QueryRecord();
+  try {
+    int id = std::stoi(
+        std::dynamic_pointer_cast<LabeledInputBase>(deleteIdInput)->GetInput());
+    Database::DeleteRecord(id);
+  } catch (std::exception) {
+    return;
+  }
 });
 
 auto labeledInputsComponent = Container::Vertical(labeledInputs);
