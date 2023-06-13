@@ -21,7 +21,6 @@ public:
                                          const std::string &s_status);
   static void InsertRecord(const Record &record);
   static void DeleteRecord(int id);
-  static int CalcSum();
   static int CalcSum(const std::string &, const std::string &);
   static std::vector<std::string> QueryType();
   static bool Init();

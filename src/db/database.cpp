@@ -121,27 +121,22 @@ void Database::DeleteRecord(int id) {
   Database::UpdateCache();
 }
 
-int Database::CalcSum() {
+int Database::CalcSum(const std::string &targetType,
+                      const std::string &targetADS) {
   try {
-    return Database::db.execAndGet("SELECT sum(amount) FROM data");
+    SQLite::Statement query{
+        Database::db, "SELECT sum(amount) FROM data WHERE type        LIKE ? "
+                      "                             AND   adscription LIKE ?"};
+    if (targetType.size() > 0)
+      query.bind(1, targetType);
+    else
+      query.bind(1, "%");
+    query.bind(2, targetADS);
+    query.executeStep();
+    return query.getColumn(0);
   } catch (std::exception &e) {
     return -1;
   }
-}
-
-int Database::CalcSum(const std::string &targetType,
-                      const std::string &targetADS) {
-  // try {
-  SQLite::Statement query{
-      Database::db, "SELECT sum(amount) FROM data WHERE type        LIKE ? "
-                    "                             AND   adscription LIKE ?"};
-  query.bind(1, targetType);
-  query.bind(2, targetADS);
-  query.executeStep();
-  return query.getColumn(0);
-  // } catch (std::exception &e) {
-  // return -1;
-  //}
 }
 
 std::vector<std::string> Database::QueryType() {
