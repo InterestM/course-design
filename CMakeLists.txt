@@ -32,9 +32,10 @@ project(hello_world)
 aux_source_directory(src/tui SRC_TUI_LIST)
 aux_source_directory(src/tui/option SRC_TUI_OPTION_LIST)
 aux_source_directory(src/tui/component SRC_TUI_COMPONENT_LIST)
-aux_source_directory(src/db SRC_DATA_LIST)
+aux_source_directory(src/db SRC_DB_LIST)
+aux_source_directory(src/data SRC_DATA_LIST)
 
-add_executable(${PROJECT_NAME} ${SRC_TUI_LIST} ${SRC_TUI_OPTION_LIST} ${SRC_TUI_COMPONENT_LIST} ${SRC_DATA_LIST})
+add_executable(${PROJECT_NAME} ${SRC_TUI_LIST} ${SRC_TUI_OPTION_LIST} ${SRC_TUI_COMPONENT_LIST} ${SRC_DB_LIST} ${SRC_DATA_LIST})
 
 target_include_directories(${PROJECT_NAME} PRIVATE include)
 
