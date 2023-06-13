@@ -81,8 +81,15 @@ auto queryComponent =
 } // namespace
 
 auto records = Renderer(queryComponent, [] {
-  return vbox({hbox({window(text("条件"), labeledInputsComponent->Render()),
-                     queryButton->Render()}) |
-                   hcenter,
-               GetTable().Render() | hcenter});
+  return vbox({
+      vbox({
+          hbox({window(text("条件"), labeledInputsComponent->Render()),
+                queryButton->Render()}) |
+              hcenter,
+
+          GetTable().Render(),
+          Button("END", {}, ButtonOption::Ascii())->Render() | hcenter,
+      }) | vscroll_indicator |
+          frame | size(HEIGHT, LESS_THAN, 60) | hcenter,
+  });
 });

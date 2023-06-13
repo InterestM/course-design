@@ -24,20 +24,21 @@ Component homescreen = Renderer([] {
   //-----------------------------------------------
   auto container = Container::Vertical({});
   std::vector<std::string> types = Database::QueryType();
+  std::vector<int> nums;
   int sum = {Database::CalcSum()};
 
   for (int i = 0; i < types.size(); i++) {
-    container->Add(Renderer([&] {
-      // int blueNum = {Database::CalcSum(str, "BLUE")};
+    container->Add(Renderer([=] {
+      int blueNum = {Database::CalcSum(types[i], "BLUE")};
+      int redNum = {Database::CalcSum(types[i], "RED")};
       return hbox({
-          // gauge(1.0 * blueNum / sum) | color(Color::Blue),
-          // text(std::to_string(blueNum)),
-          text(types[i]) | hcenter,
-          // text(std::to_string(Database::CalcSum(str, "RED"))),
-          // gaugeLeft(1.0 * Database::CalcSum(str, "RED") / sum) |
-          //    color(Color ::Red),
-      }); //|
-          // flex;
+                 gauge(1.0 * blueNum / sum) | color(Color::Blue),
+                 text(std::to_string(blueNum)),
+                 text(types[i]) | hcenter,
+                 text(std::to_string(redNum)),
+                 gaugeLeft(1.0 * redNum / sum) | color(Color ::Red),
+             }) |
+             flex;
     }));
   }
 

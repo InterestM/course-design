@@ -1,5 +1,6 @@
 #include "db/database.hpp"
 
+#include <exception>
 #include <string>
 #include <vector>
 
@@ -36,15 +37,19 @@ namespace {
 std::vector<std::string> cacheParams = {"", "", "", ""};
 
 std::vector<Record> Query2Records(SQLite::Statement &&query) {
-  std::vector<Record> records;
-  while (query.executeStep()) {
-    records.push_back(
-        Record(query.getColumn("id"), query.getColumn("type"),
-               query.getColumn("specification"), query.getColumn("adscription"),
-               query.getColumn("amount"), query.getColumn("status"),
-               query.getColumn("source")));
+  try {
+    std::vector<Record> records;
+    while (query.executeStep()) {
+      records.push_back(
+          Record(query.getColumn("id"), query.getColumn("type"),
+                 query.getColumn("specification"),
+                 query.getColumn("adscription"), query.getColumn("amount"),
+                 query.getColumn("status"), query.getColumn("source")));
+    }
+    return records;
+  } catch (std::exception &e) {
+    return {Record{0, e.what(), "ERROR", "ERROR", 0, "ERROR", "ERROR"}};
   }
-  return records;
 }
 
 } // namespace
@@ -53,7 +58,6 @@ void Database::UpdateCache() {
   if (cache != nullptr) {
     delete cache;
   }
-
   SQLite::Statement query(Database::db,
                           "SELECT * FROM data WHERE type          LIKE ?"
                           "                   AND   specification LIKE ?"
@@ -121,23 +125,23 @@ int Database::CalcSum() {
   try {
     return Database::db.execAndGet("SELECT sum(amount) FROM data");
   } catch (std::exception &e) {
-    return 0;
+    return -1;
   }
 }
 
 int Database::CalcSum(const std::string &targetType,
                       const std::string &targetADS) {
-  try {
-    SQLite::Statement query{
-        Database::db, "SELECT sum(amount) FROM data WHERE type LIKE ? AND "
-                      "adscription LIKE ?"};
-    query.bind(1, targetType);
-    query.bind(2, targetADS);
-    query.exec();
-    return query.getColumn(0);
-  } catch (std::exception &e) {
-    return -1;
-  }
+  // try {
+  SQLite::Statement query{
+      Database::db, "SELECT sum(amount) FROM data WHERE type        LIKE ? "
+                    "                             AND   adscription LIKE ?"};
+  query.bind(1, targetType);
+  query.bind(2, targetADS);
+  query.executeStep();
+  return query.getColumn(0);
+  // } catch (std::exception &e) {
+  // return -1;
+  //}
 }
 
 std::vector<std::string> Database::QueryType() {
