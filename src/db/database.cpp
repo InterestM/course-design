@@ -1,4 +1,3 @@
-
 #include "db/database.hpp"
 
 #include <string>
@@ -7,121 +6,116 @@
 #include "SQLiteCpp/Database.h"
 #include "SQLiteCpp/SQLiteCpp.h"
 #include "SQLiteCpp/Statement.h"
-
-const std::vector<std::string> Database::title = {
-    "ID", "类型", "型号", "归属", "数量", "状态", "来源"};
+#include "data/record.hpp"
 
 SQLite::Database Database::db{"data.db3",
                               SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE};
-std::vector<std::vector<std::string>> Database::data{};
 
 bool Database::Init() {
   try {
     SQLite::Transaction transaction(Database::db);
     Database::db.exec(
-        "CREATE TABLE IF NOT EXISTS data (id INTEGER PRIMARY KEY "
-        "AUTOINCREMENT,type TEXT,specification TEXT,adscription "
-        "TEXT,amount INTEGER,status TEXT,source TEXT)");
+        "CREATE TABLE IF NOT EXISTS data ("
+        "  id            INTEGER PRIMARY KEY AUTOINCREMENT,"
+        "  type          TEXT   ,"
+        "  specification TEXT   ,"
+        "  adscription   TEXT   ,"
+        "  amount        INTEGER,"
+        "  status        TEXT   ,"
+        "  source        TEXT   )");
     transaction.commit();
   } catch (std::exception &e) {
     return false;
   }
-
-  Database::data = {Database::title};
   return true;
 }
 
-void Database::QueryRecord() {
-  std::vector<std::vector<std::string>> table = {Database::title};
-  try {
-    SQLite::Statement query(Database::db, "SELECT * FROM data");
-    while (query.executeStep()) {
-      std::vector<std::string> tmp;
-      for (int i = 0; i < Database::title.size(); i++)
-        tmp.push_back(query.getColumn(i));
-      table.push_back(tmp);
-    }
-  } catch (std::exception &e) {
-    table = std::vector<std::vector<std::string>>{
-        {"something unexpected happened while loading"}};
+std::vector<Record> *Database::cache = nullptr;
+
+namespace {
+
+std::vector<std::string> cacheParams = {"", "", "", ""};
+
+std::vector<Record> Query2Records(SQLite::Statement &&query) {
+  std::vector<Record> records;
+  while (query.executeStep()) {
+    records.push_back(
+        Record(query.getColumn("id"), query.getColumn("type"),
+               query.getColumn("specification"), query.getColumn("adscription"),
+               query.getColumn("amount"), query.getColumn("status"),
+               query.getColumn("source")));
   }
-  Database::data = table;
+  return records;
 }
 
-void Database::QueryRecord(const std::string &s_type, const std::string &s_spec,
-                           const std::string &s_ads,
-                           const std::string &s_status) {
-  std::vector<std::vector<std::string>> table = {Database::title};
-  try {
-    SQLite::Statement query(
-        Database::db,
-        "SELECT * FROM data WHERE type LIKE ? AND specification LIKE ? AND "
-        "adscription LIKE ? AND status LIKE ?");
-    if (s_type.length() > 0) {
-      query.bind(1, "%" + s_type + "%");
-    } else {
-      query.bind(1, "%");
-    }
-    if (s_spec.length() > 0) {
-      query.bind(2, "%" + s_spec + "%");
-    } else {
-      query.bind(2, "%");
-    }
-    if (s_ads.length() > 0) {
-      query.bind(3, "%" + s_ads + "%");
-    } else {
-      query.bind(3, "%");
-    }
-    if (s_status.length() > 0) {
-      query.bind(4, "%" + s_status + "%");
-    } else {
-      query.bind(4, "%");
-    }
-    while (query.executeStep()) {
-      std::vector<std::string> tmp;
-      for (int i = 0; i < Database::title.size(); i++)
-        tmp.push_back(query.getColumn(i));
-      table.push_back(tmp);
-    }
-  } catch (std::exception &e) {
-    table = std::vector<std::vector<std::string>>{
-        {"something unexpected happened while loading"}};
+}  // namespace
+
+void Database::UpdateCache() {
+  if (cache != nullptr) {
+    delete cache;
   }
-  Database::data = table;
+
+  SQLite::Statement query(Database::db,
+                          "SELECT * FROM data WHERE type          LIKE ?"
+                          "                   AND   specification LIKE ?"
+                          "                   AND   adscription   LIKE ?"
+                          "                   AND   status        LIKE ?");
+
+  query.bind(1, "%" + cacheParams[0] + "%");
+  query.bind(2, "%" + cacheParams[1] + "%");
+  query.bind(3, "%" + cacheParams[2] + "%");
+  query.bind(4, "%" + cacheParams[3] + "%");
+
+  cache = new std::vector{Query2Records(std::move(query))};
 }
 
-std::vector<std::vector<std::string>> Database::LoadRecord() {
-  return Database::data;
+std::vector<Record> Database::QueryRecord() {
+  if (Database::cache == nullptr) {
+    Database::UpdateCache();
+  }
+  return *Database::cache;
 }
 
-void Database::InsertRecord(const std::string (&tmp)[6]) {
-  try {
-    SQLite::Transaction transaction(Database::db);
-    SQLite::Statement query{
-        Database::db,
-        "INSERT INTO data "
-        "(id,type,specification,adscription,amount,status,source) "
-        "VALUES (NULL,?,?,?,?,?,?)"};
-    for (int i = 1; i < Database::title.size(); i++) {
-      query.bind(i, tmp[i - 1]);
-    }
-    query.exec();
-    transaction.commit();
-  } catch (std::exception &e) {
-      Database::data = {{"something unexpected happened while Inserting"}};
+std::vector<Record> Database::QueryRecord(const std::string &s_type,
+                                          const std::string &s_spec,
+                                          const std::string &s_ads,
+                                          const std::string &s_status) {
+  if (Database::cache == nullptr || cacheParams[0] != s_type ||
+      cacheParams[1] != s_spec || cacheParams[2] != s_ads ||
+      cacheParams[3] != s_status) {
+    cacheParams = {s_type, s_spec, s_ads, s_status};
+    Database::UpdateCache();
   }
+  return *Database::cache;
 }
 
-void Database::DeleteRecord(const std::string &id) {
-  try {
-    SQLite::Transaction transaction(Database::db);
-    SQLite::Statement query{Database::db, "DELETE FROM data WHERE ID = ?;"};
-    query.bind(1, id);
-    query.exec();
-    transaction.commit();
-  } catch (std::exception &e) {
-      Database::data = {{"something unexpected happened while Deleting"}};
-  }
+void Database::InsertRecord(const Record &record) {
+  SQLite::Transaction transaction(Database::db);
+  SQLite::Statement query{
+      Database::db,
+      "INSERT INTO data "
+      "(id, type, specification, adscription, amount, status, source) "
+      "VALUES (NULL, ?, ?, ?, ?, ?, ?)"};
+
+  query.bind(1, record.getType());
+  query.bind(2, record.getSpecification());
+  query.bind(3, record.getAdscription());
+  query.bind(4, record.getAmount());
+  query.bind(5, record.getStatus());
+  query.bind(6, record.getSource());
+
+  query.exec();
+  transaction.commit();
+  Database::UpdateCache();
+}
+
+void Database::DeleteRecord(int id) {
+  SQLite::Transaction transaction(Database::db);
+  SQLite::Statement query{Database::db, "DELETE FROM data WHERE ID = ?;"};
+  query.bind(1, id);
+  query.exec();
+  transaction.commit();
+  Database::UpdateCache();
 }
 
 int Database::CalcSum() {
