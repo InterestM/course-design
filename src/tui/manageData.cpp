@@ -77,11 +77,13 @@ auto button_open_insert = Button(
     "新增记录", [] { depth = 1; }, ButtonOption::Ascii());
 auto button_open_delete = Button(
     "删除记录", [] { depth = 2; }, ButtonOption::Ascii());
+auto button_open_update = Button(
+    "编辑记录", [] { depth = 3; }, ButtonOption::Ascii());
 
 auto labeledInputsComponent = Container::Horizontal(labeledInputs);
-auto queryComponent =
-    Container::Horizontal({button_open_insert, button_open_delete,
-                           labeledInputsComponent, queryButton});
+auto queryComponent = Container::Horizontal(
+    {button_open_insert, button_open_delete, button_open_update,
+     labeledInputsComponent, queryButton});
 
 Component depth_0_renderer = Renderer(queryComponent, [] {
   return vbox({
@@ -94,6 +96,8 @@ Component depth_0_renderer = Renderer(queryComponent, [] {
                  filler(),
                  button_open_delete->Render(),
                  filler(),
+                 button_open_update->Render(),
+                 filler(),
              }),
              GetTable().Render(),
          }) |
@@ -104,8 +108,8 @@ Component depth_0_renderer = Renderer(queryComponent, [] {
 // At depth=2,open deleteWindow(see at edit.cpp)
 
 // contain depth 0&1
-auto main_container =
-    Container::Tab({depth_0_renderer, insertWindow, deleteWindow}, &depth);
+auto main_container = Container::Tab(
+    {depth_0_renderer, insertWindow, deleteWindow, updateWindow}, &depth);
 } // namespace
 
 Component dataManager = Renderer(main_container, [] {
@@ -121,6 +125,12 @@ Component dataManager = Renderer(main_container, [] {
     document = dbox({
         document,
         deleteWindow->Render() | bgcolor(Color::Black) | clear_under | center,
+    });
+  }
+  if (depth == 3) {
+    document = dbox({
+        document,
+        updateWindow->Render() | bgcolor(Color::Black) | clear_under | center,
     });
   }
   return document;
