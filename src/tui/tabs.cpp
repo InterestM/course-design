@@ -1,9 +1,9 @@
 #include <ftxui/component/component.hpp>         // for Menu, Renderer, Vertical
 #include <ftxui/component/component_options.hpp> // for MenuOption, UnderlineOption
 
-#include "tui/dataManager.hpp"
 #include "tui/edit.hpp"
 #include "tui/homescreen.hpp"
+#include "tui/manageData.hpp"
 #include "tui/option/options.hpp"
 #include "tui/setting.hpp"
 

@@ -4,8 +4,8 @@
 
 #include "db/database.hpp"
 #include "tui/component/labeled_input.hpp"
-#include "tui/dataManager.hpp"
 #include "tui/edit.hpp"
+#include "tui/manageData.hpp"
 
 #include "ftxui/component/component.hpp"
 #include "ftxui/component/component_base.hpp"
