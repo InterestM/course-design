@@ -1,13 +1,13 @@
-#include "db/database.hpp"
-
 #include <exception>
 #include <string>
 #include <vector>
 
-#include "SQLiteCpp/Database.h"
-#include "SQLiteCpp/SQLiteCpp.h"
-#include "SQLiteCpp/Statement.h"
+#include <SQLiteCpp/Database.h>
+#include <SQLiteCpp/SQLiteCpp.h>
+#include <SQLiteCpp/Statement.h>
+
 #include "data/record.hpp"
+#include "db/database.hpp"
 
 SQLite::Database Database::db{"data.db3",
                               SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE};

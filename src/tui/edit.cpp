@@ -1,6 +1,5 @@
 #include <algorithm>
 #include <exception>
-
 #include <memory>
 #include <string>
 
@@ -9,11 +8,11 @@
 #include "tui/component/labeled_input.hpp"
 #include "tui/edit.hpp"
 
-#include "ftxui/component/component.hpp"
-#include "ftxui/screen/color.hpp" // for Color, Color::Blue, Color::Cyan, Color::White, ftxui
+#include <ftxui/component/component.hpp>
 #include <ftxui/component/component_base.hpp>
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/dom/node.hpp>
+#include <ftxui/screen/color.hpp>
 
 using namespace ftxui;
 namespace {

@@ -1,8 +1,9 @@
-#include "ftxui/component/component.hpp"         // for Menu, Renderer, Vertical
-#include "ftxui/component/component_options.hpp" // for MenuOption, UnderlineOption
-#include "ftxui/screen/color.hpp" // for Color, Color::Blue, Color::Red
-#include <chrono>                 // for operator""ms, literals
+#include <chrono>
 #include <iostream>
+
+#include <ftxui/component/component.hpp>
+#include <ftxui/component/component_options.hpp>
+#include <ftxui/screen/color.hpp>
 
 #include "tui/option/options.hpp"
 using namespace ftxui;
@@ -14,14 +15,4 @@ Options::Options() : option{MenuOption::HorizontalAnimated()} {
   option.underline.color_active = Color::NavajoWhite1;
   option.underline.color_inactive = Color::IndianRed;
   // option.underline.SetAnimationDuration(350ms);
-}
-void Options::DelayOn() {
-  using namespace std::literals;
-  option.underline.follower_delay = 250ms;
-  option.underline.color_inactive = Color::Red;
-}
-void Options::DelayOff() {
-  using namespace std::literals;
-  option.underline.follower_delay = 0ms;
-  option.underline.color_inactive = Color::Yellow;
 }

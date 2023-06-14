@@ -4,7 +4,8 @@
 #include <string>
 #include <vector>
 
-#include "SQLiteCpp/Database.h"
+#include <SQLiteCpp/Database.h>
+
 #include "data/record.hpp"
 
 class Database {

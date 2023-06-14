@@ -1,6 +1,5 @@
-#include <cstdlib>
-#include <ftxui/component/component.hpp>         // for Menu, Renderer, Vertical
-#include <ftxui/component/component_options.hpp> // for MenuOption, UnderlineOption
+#include <ftxui/component/component.hpp>
+#include <ftxui/component/component_options.hpp>
 #include <ftxui/screen/screen.hpp>
 
 #include "tui/edit.hpp"

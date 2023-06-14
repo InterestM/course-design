@@ -8,13 +8,13 @@
 #include "tui/edit.hpp"
 #include "tui/manageData.hpp"
 
-#include "ftxui/component/component.hpp"
-#include "ftxui/component/component_base.hpp"
-#include "ftxui/dom/elements.hpp"
-#include "ftxui/dom/node.hpp"  //for Render
-#include "ftxui/dom/table.hpp" // for Table, TableSelection
-#include "ftxui/screen/color.hpp" // for Color, Color::Blue, Color::Cyan, Color::White, ftxui
-#include "ftxui/screen/screen.hpp" // for Screen
+#include <ftxui/component/component.hpp>
+#include <ftxui/component/component_base.hpp>
+#include <ftxui/dom/elements.hpp>
+#include <ftxui/dom/node.hpp>
+#include <ftxui/dom/table.hpp>
+#include <ftxui/screen/color.hpp>
+#include <ftxui/screen/screen.hpp>
 
 using namespace ftxui;
 
