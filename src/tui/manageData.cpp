@@ -4,8 +4,8 @@
 
 #include "db/database.hpp"
 #include "tui/component/labeled_input.hpp"
+#include "tui/dataManager.hpp"
 #include "tui/edit.hpp"
-#include "tui/query.hpp"
 
 #include "ftxui/component/component.hpp"
 #include "ftxui/component/component_base.hpp"
@@ -101,7 +101,7 @@ auto main_container = Container::Tab(
     &depth);
 } // namespace
 
-Component records = Renderer(main_container, [] {
+Component dataManager = Renderer(main_container, [] {
   Element document = depth_0_renderer->Render();
 
   if (depth == 1) {

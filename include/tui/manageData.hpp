@@ -3,6 +3,6 @@
 
 #include <ftxui/component/component_base.hpp>
 extern int depth;
-extern ftxui::Component records;
+extern ftxui::Component dataManager;
 
 #endif

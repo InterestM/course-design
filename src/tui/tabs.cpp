@@ -1,10 +1,10 @@
 #include <ftxui/component/component.hpp>         // for Menu, Renderer, Vertical
 #include <ftxui/component/component_options.hpp> // for MenuOption, UnderlineOption
 
+#include "tui/dataManager.hpp"
 #include "tui/edit.hpp"
 #include "tui/homescreen.hpp"
 #include "tui/option/options.hpp"
-#include "tui/query.hpp"
 #include "tui/setting.hpp"
 
 namespace {
@@ -21,7 +21,7 @@ auto tab_selection =
 auto tab_content = Container::Tab(
     {
         homescreen,
-        records,
+        dataManager,
         settings,
     },
     &tab_index);
