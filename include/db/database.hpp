@@ -24,5 +24,6 @@ public:
   static int CalcSum(const std::string &, const std::string &);
   static std::vector<std::string> QueryType();
   static bool Init();
+  static bool ClearRecord();
 };
 #endif

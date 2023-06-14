@@ -151,3 +151,23 @@ std::vector<std::string> Database::QueryType() {
   }
   return types;
 }
+
+bool Database::ClearRecord() {
+  try {
+    SQLite::Transaction transaction(Database::db);
+    Database::db.exec("DROP TABLE data");
+    Database::db.exec("CREATE TABLE IF NOT EXISTS data ("
+                      "  id            INTEGER PRIMARY KEY AUTOINCREMENT,"
+                      "  type          TEXT   ,"
+                      "  specification TEXT   ,"
+                      "  adscription   TEXT   ,"
+                      "  amount        INTEGER,"
+                      "  status        TEXT   ,"
+                      "  source        TEXT   )");
+    transaction.commit();
+
+    return true;
+  } catch (std::exception &e) {
+    return false;
+  }
+}
