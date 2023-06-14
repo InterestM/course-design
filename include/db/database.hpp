@@ -14,13 +14,14 @@ private:
   static void UpdateCache();
 
 public:
-  static std::vector<Record> QueryRecord();
-  static std::vector<Record> QueryRecord(const std::string &s_type,
-                                         const std::string &s_spec,
-                                         const std::string &s_ads,
-                                         const std::string &s_status);
-  static void InsertRecord(const Record &record);
+  static std::vector<Record> &QueryRecord();
+  static std::vector<Record> &QueryRecord(const std::string &s_type,
+                                          const std::string &s_spec,
+                                          const std::string &s_ads,
+                                          const std::string &s_status);
+  static void InsertRecord(const Record &);
   static void DeleteRecord(int id);
+  static void UpdateRecord(const Record &);
   static int CalcSum(const std::string &, const std::string &);
   static std::vector<std::string> QueryType();
   static bool Init();

@@ -28,7 +28,7 @@ std::vector<Component> insertLabeledInputs = {
     LabeledInput("类型: ", "Type", borderEmpty),
     LabeledInput("型号: ", "Specification", borderEmpty),
     LabeledInput("归属: ", "Red/Blue", borderEmpty),
-    LabeledInput("数量: ", "number", borderEmpty),
+    LabeledInput("数量: ", "Number", borderEmpty),
     LabeledInput("状态: ", "Destoryed/Captured", borderEmpty),
     LabeledInput("来源: ", "URL", borderEmpty),
 };
@@ -88,10 +88,11 @@ Component deleteComponenet = Container::Horizontal({
     quitButton2,
 });
 std::vector<Component> updateLabeledInputs = {
+    LabeledInput("ID号: ", "Necssary", borderEmpty),
     LabeledInput("类型: ", "Type", borderEmpty),
     LabeledInput("型号: ", "Specification", borderEmpty),
     LabeledInput("归属: ", "Red/Blue", borderEmpty),
-    LabeledInput("数量: ", "number", borderEmpty),
+    LabeledInput("数量: ", "Number", borderEmpty),
     LabeledInput("状态: ", "Destoryed/Captured", borderEmpty),
     LabeledInput("来源: ", "URL", borderEmpty),
 };
@@ -101,21 +102,21 @@ Component updateLabeledInputsComponent =
 Component updateButton = Button(
     "插入",
     [] {
-      static std::string inserts[6];
+      static std::string inserts[7];
       std::transform(updateLabeledInputs.begin(), updateLabeledInputs.end(),
                      inserts, [](Component &input) {
                        return std::dynamic_pointer_cast<LabeledInputBase>(input)
                            ->GetInput();
                      });
       try {
-        Database::InsertRecord({
-            -1,
-            inserts[0],
+        Database::UpdateRecord({
+            std::stoi(inserts[0]),
             inserts[1],
             inserts[2],
-            std::stoi(inserts[3]),
-            inserts[4],
+            inserts[3],
+            std::stoi(inserts[4]),
             inserts[5],
+            inserts[6],
         });
       } catch (std::exception) {
         return;

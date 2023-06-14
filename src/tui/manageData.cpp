@@ -44,20 +44,17 @@ static ftxui::Table GetTable() {
 
   table.SelectAll().Border(LIGHT);
 
-  // Add border around the first column.
   table.SelectColumn(0).Border(LIGHT);
 
-  // Make first row bold with a double border.
   table.SelectRow(0).Decorate(bold);
   table.SelectRow(0).SeparatorVertical(LIGHT);
   table.SelectRow(0).Border(DOUBLE);
 
-  // Align right the "Release date" column.
   table.SelectColumn(5).DecorateCells(center);
+  table.SelectRow(0).DecorateCells(center);
 
-  // Select row from the second to the last.
   auto content = table.SelectColumns(1, -1);
-  // Alternate in between 3 colors.
+
   content.DecorateCellsAlternateColumn(color(Color::NavajoWhite1), 3, 0);
   content.DecorateCellsAlternateColumn(color(Color::RedLight), 3, 1);
   content.DecorateCellsAlternateColumn(color(Color::Blue), 3, 2);
@@ -104,8 +101,8 @@ Component depth_0_renderer = Renderer(queryComponent, [] {
          vscroll_indicator | frame | size(HEIGHT, LESS_THAN, 60) | hcenter;
 });
 
-// At depth=1, open insertWindow(see at edit.cpp)
-// At depth=2,open deleteWindow(see at edit.cpp)
+// At depth=1, open insertWindow(see in edit.cpp)
+// At depth=2,open deleteWindow(see in edit.cpp)
 
 // contain depth 0&1
 auto main_container = Container::Tab(

@@ -48,7 +48,7 @@ std::vector<Record> Query2Records(SQLite::Statement &&query) {
     }
     return records;
   } catch (std::exception &e) {
-    return {Record{0, e.what(), "ERROR", "ERROR", 0, "ERROR", "ERROR"}};
+    return {Record{0, "ERROT", e.what(), "ERROR", 0, "ERROR", "ERROR"}};
   }
 }
 
@@ -72,17 +72,17 @@ void Database::UpdateCache() {
   cache = new std::vector{Query2Records(std::move(query))};
 }
 
-std::vector<Record> Database::QueryRecord() {
+std::vector<Record> &Database::QueryRecord() {
   if (Database::cache == nullptr) {
     Database::UpdateCache();
   }
   return *Database::cache;
 }
 
-std::vector<Record> Database::QueryRecord(const std::string &s_type,
-                                          const std::string &s_spec,
-                                          const std::string &s_ads,
-                                          const std::string &s_status) {
+std::vector<Record> &Database::QueryRecord(const std::string &s_type,
+                                           const std::string &s_spec,
+                                           const std::string &s_ads,
+                                           const std::string &s_status) {
   if (Database::cache == nullptr || cacheParams[0] != s_type ||
       cacheParams[1] != s_spec || cacheParams[2] != s_ads ||
       cacheParams[3] != s_status) {
@@ -117,6 +117,51 @@ void Database::DeleteRecord(int id) {
   SQLite::Statement query{Database::db, "DELETE FROM data WHERE ID = ?;"};
   query.bind(1, id);
   query.exec();
+  transaction.commit();
+  Database::UpdateCache();
+}
+
+void Database::UpdateRecord(const Record &record) {
+  SQLite::Transaction transaction(Database::db);
+  SQLite::Statement rawQuery = {Database::db,
+                                "SELECT * FROM data WHERE id LIKE ?"};
+  rawQuery.bind(1, record.getId());
+  Record raw = Query2Records(std::move(rawQuery)).front();
+  SQLite::Statement update = {Database::db, "UPDATE data "
+                                            "SET type=?,"
+                                            "    specification=?, "
+                                            "    adscription=?, "
+                                            "    amount=?, "
+                                            "    status=?, "
+                                            "    source=? "
+                                            "WHERE id=?"};
+  if (record.getType().size() > 0)
+    update.bind(1, record.getType());
+  else
+    update.bind(1, raw.getType());
+  if (record.getSpecification().size() > 0)
+    update.bind(2, record.getSpecification());
+  else
+    update.bind(2, raw.getSpecification());
+  if (record.getAdscription().size() > 0)
+    update.bind(3, record.getAdscription());
+  else
+    update.bind(3, raw.getAdscription());
+  if (record.getAmount() > 0)
+    update.bind(4, record.getAmount());
+  else
+    update.bind(4, raw.getAmount());
+  if (record.getStatus().size() > 0)
+    update.bind(5, record.getStatus());
+  else
+    update.bind(5, raw.getStatus());
+  if (record.getSource().size() > 0)
+    update.bind(6, record.getSource());
+  else
+    update.bind(6, raw.getSource());
+  update.bind(7, record.getId());
+
+  update.exec();
   transaction.commit();
   Database::UpdateCache();
 }
