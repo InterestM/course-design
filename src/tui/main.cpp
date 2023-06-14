@@ -23,6 +23,26 @@ int main(int argc, char *argv[]) {
     }
   });
 
+  main_renderer |= CatchEvent([&](ftxui::Event event) {
+    if (event == Event::F1) {
+      tab_index = 0;
+      return true;
+    };
+    if (event == Event::F2) {
+      tab_index = 1;
+      return true;
+    }
+    if (event == Event::F3) {
+      tab_index = 2;
+      return true;
+    }
+    if (event == Event::Escape) {
+      screen.ExitLoopClosure()();
+      return true;
+    }
+    return false;
+  });
+
   screen.Loop(main_renderer | bgcolor(Color::Black));
   refresh_ui_continue = false;
   refresh_ui.join();
