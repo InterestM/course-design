@@ -16,8 +16,7 @@
 #include "ftxui/screen/screen.hpp" // for Screen
 
 using namespace ftxui;
-int depth; // There are two layers. One at depth = 0 and the modal
-           // window at depth = 1;
+
 namespace {
 // At depth=0, Data Browser
 std::vector<ftxui::Component> labeledInputs = {
@@ -73,32 +72,39 @@ auto queryButton = Button("查询", [] {
       std::dynamic_pointer_cast<LabeledInputBase>(labeledInputs[3])
           ->GetInput());
 });
-auto button_open = Button("open", [] { depth = 1; });
+
+auto button_open_insert = Button(
+    "新增记录", [] { depth = 1; }, ButtonOption::Ascii());
+auto button_open_delete = Button(
+    "删除记录", [] { depth = 2; }, ButtonOption::Ascii());
+
 auto labeledInputsComponent = Container::Horizontal(labeledInputs);
 auto queryComponent =
-    Container::Horizontal({button_open, labeledInputsComponent, queryButton});
+    Container::Horizontal({button_open_insert, button_open_delete,
+                           labeledInputsComponent, queryButton});
 
 Component depth_0_renderer = Renderer(queryComponent, [] {
   return vbox({
-             button_open->Render(),
              hbox({window(text("条件"), labeledInputsComponent->Render()),
                    queryButton->Render()}) |
                  hcenter,
+             hbox({
+                 filler(),
+                 button_open_insert->Render(),
+                 filler(),
+                 button_open_delete->Render(),
+                 filler(),
+             }),
              GetTable().Render(),
          }) |
          vscroll_indicator | frame | size(HEIGHT, LESS_THAN, 60) | hcenter;
 });
 
-// At depth=1, DataEdit modals
-auto button_quit = Button("quit", [] { depth = 0; });
+// At depth=1, DataEdit modals need
 
 // contain depth 0&1
-auto main_container = Container::Tab(
-    {
-        depth_0_renderer,
-        edits,
-    },
-    &depth);
+auto main_container =
+    Container::Tab({depth_0_renderer, insertWindow, deleteWindow}, &depth);
 } // namespace
 
 Component dataManager = Renderer(main_container, [] {
@@ -107,7 +113,13 @@ Component dataManager = Renderer(main_container, [] {
   if (depth == 1) {
     document = dbox({
         document,
-        edits->Render() | clear_under | center,
+        insertWindow->Render() | bgcolor(Color::Black) | clear_under | center,
+    });
+  }
+  if (depth == 2) {
+    document = dbox({
+        document,
+        deleteWindow->Render() | bgcolor(Color::Black) | clear_under | center,
     });
   }
   return document;
