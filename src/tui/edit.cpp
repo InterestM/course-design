@@ -29,7 +29,7 @@ std::vector<Component> insertLabeledInputs = {
     LabeledInput("型号: ", "Specification", borderEmpty),
     LabeledInput("归属: ", "Red/Blue", borderEmpty),
     LabeledInput("数量: ", "Number", borderEmpty),
-    LabeledInput("状态: ", "Destoryed/Captured", borderEmpty),
+    LabeledInput("状态: ", "Destoryed/Captured/Damaged", borderEmpty),
     LabeledInput("来源: ", "URL", borderEmpty),
 };
 Component insertLabeledInputsComponent =
@@ -93,7 +93,7 @@ std::vector<Component> updateLabeledInputs = {
     LabeledInput("型号: ", "Specification", borderEmpty),
     LabeledInput("归属: ", "Red/Blue", borderEmpty),
     LabeledInput("数量: ", "Number", borderEmpty),
-    LabeledInput("状态: ", "Destoryed/Captured", borderEmpty),
+    LabeledInput("状态: ", "Destoryed/Captured/Damaged", borderEmpty),
     LabeledInput("来源: ", "URL", borderEmpty),
 };
 Component updateLabeledInputsComponent =

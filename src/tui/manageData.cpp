@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <ftxui/component/component_options.hpp>
 #include <string> // for basic_string, allocator, string
 #include <vector> // for vector
 
@@ -23,7 +24,7 @@ std::vector<ftxui::Component> labeledInputs = {
     LabeledInput(" 类型: ", "Type"),
     LabeledInput(" 型号: ", "Specification"),
     LabeledInput(" 归属: ", "Red/Blue"),
-    LabeledInput(" 状态: ", "Destoryed/Captured"),
+    LabeledInput(" 状态: ", "Destoryed/Captured/Damaged"),
 };
 
 static ftxui::Table GetTable() {
@@ -56,19 +57,25 @@ static ftxui::Table GetTable() {
   auto content = table.SelectColumns(1, -1);
 
   content.DecorateCellsAlternateColumn(color(Color::NavajoWhite1), 3, 0);
-  content.DecorateCellsAlternateColumn(color(Color::RedLight), 3, 1);
+  content.DecorateCellsAlternateColumn(color(Color::LightSkyBlue1), 3, 1);
   content.DecorateCellsAlternateColumn(color(Color::Blue), 3, 2);
 
   return table;
 };
-auto queryButton = Button("查询", [] {
-  Database::QueryRecord(
-      std::dynamic_pointer_cast<LabeledInputBase>(labeledInputs[0])->GetInput(),
-      std::dynamic_pointer_cast<LabeledInputBase>(labeledInputs[1])->GetInput(),
-      std::dynamic_pointer_cast<LabeledInputBase>(labeledInputs[2])->GetInput(),
-      std::dynamic_pointer_cast<LabeledInputBase>(labeledInputs[3])
-          ->GetInput());
-});
+auto queryButton = Button(
+    "查询",
+    [] {
+      Database::QueryRecord(
+          std::dynamic_pointer_cast<LabeledInputBase>(labeledInputs[0])
+              ->GetInput(),
+          std::dynamic_pointer_cast<LabeledInputBase>(labeledInputs[1])
+              ->GetInput(),
+          std::dynamic_pointer_cast<LabeledInputBase>(labeledInputs[2])
+              ->GetInput(),
+          std::dynamic_pointer_cast<LabeledInputBase>(labeledInputs[3])
+              ->GetInput());
+    },
+    ButtonOption::Ascii());
 
 auto button_open_insert = Button(
     "新增记录", [] { depth = 1; }, ButtonOption::Ascii());
@@ -84,9 +91,13 @@ auto queryComponent = Container::Horizontal(
 
 Component depth_0_renderer = Renderer(queryComponent, [] {
   return vbox({
-             hbox({window(text("条件"), labeledInputsComponent->Render()),
-                   queryButton->Render()}) |
-                 hcenter,
+             hbox({
+                 window(text("条件"), hbox({
+                                          labeledInputsComponent->Render(),
+                                          separator(),
+                                          queryButton->Render(),
+                                      })),
+             }) | hcenter,
              hbox({
                  filler(),
                  button_open_insert->Render(),
