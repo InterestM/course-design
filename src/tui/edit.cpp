@@ -1,5 +1,7 @@
 #include <algorithm>
 #include <exception>
+#include <ftxui/component/component_base.hpp>
+#include <ftxui/dom/node.hpp>
 #include <memory>
 #include <string>
 
@@ -23,7 +25,7 @@ std::vector<Component> labeledInputs = {
 
 Component deleteIdInput = LabeledInput("目标ID: ", "number");
 
-auto insertButton = Button("执行", [] {
+Component insertButton = Button("执行", [] {
   static std::string inserts[6];
   std::transform(
       labeledInputs.begin(), labeledInputs.end(), inserts,
@@ -55,9 +57,9 @@ auto deleteButton = Button("执行", [] {
   }
 });
 
-auto labeledInputsComponent = Container::Vertical(labeledInputs);
+Component labeledInputsComponent = Container::Vertical(labeledInputs);
 
-auto editComponent = Container::Horizontal({
+Component editComponent = Container::Horizontal({
     labeledInputsComponent,
     insertButton,
     deleteIdInput,

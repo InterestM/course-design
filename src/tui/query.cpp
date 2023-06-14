@@ -92,18 +92,11 @@ Component depth_0_renderer = Renderer(queryComponent, [] {
 // At depth=1, DataEdit modals
 auto button_quit = Button("quit", [] { depth = 0; });
 
-auto editComponet = Container::Horizontal({button_quit});
-Component depth_1_renderer = Renderer(editComponet, [] {
-  return vbox({
-             text("hey"),
-             hbox({editComponet->Render()}),
-         }) |
-         border;
-});
+// contain depth 0&1
 auto main_container = Container::Tab(
     {
         depth_0_renderer,
-        depth_1_renderer,
+        edits,
     },
     &depth);
 } // namespace
@@ -114,7 +107,7 @@ Component records = Renderer(main_container, [] {
   if (depth == 1) {
     document = dbox({
         document,
-        depth_1_renderer->Render() | clear_under | center,
+        edits->Render() | clear_under | center,
     });
   }
   return document;

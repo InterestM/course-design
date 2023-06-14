@@ -13,8 +13,7 @@ int tab_index = 0;
 
 std::vector<std::string> tab_entries = {
     "主界面",
-    "查询",
-    "管理",
+    "数据",
     "设置",
 };
 auto tab_selection =
@@ -23,7 +22,6 @@ auto tab_content = Container::Tab(
     {
         homescreen,
         records,
-        edits,
         settings,
     },
     &tab_index);
