@@ -16,13 +16,14 @@
 
 using namespace ftxui;
 namespace {
+// 关闭窗口按钮
 auto quitButton1 = Button(
-    "返回", [] { depth = 0; }, ButtonOption::Ascii());
+    "返回", [] { front_window = 0; }, ButtonOption::Ascii());
 auto quitButton2 = Button(
-    "返回", [] { depth = 0; }, ButtonOption::Ascii());
+    "返回", [] { front_window = 0; }, ButtonOption::Ascii());
 auto quitButton3 = Button(
-    "返回", [] { depth = 0; }, ButtonOption::Ascii());
-
+    "返回", [] { front_window = 0; }, ButtonOption::Ascii());
+// 添加记录
 std::vector<Component> insertLabeledInputs = {
     LabeledInput("类型: ", "Type", borderEmpty),
     LabeledInput("型号: ", "Specification", borderEmpty),
@@ -64,7 +65,7 @@ Component insertComponent = Container::Horizontal({
     insertButton,
     quitButton1,
 });
-
+// 删除记录
 Component deleteIdInput = LabeledInput("目标ID: ", "number", borderEmpty);
 
 auto deleteButton = Button(
@@ -86,6 +87,8 @@ Component deleteComponenet = Container::Horizontal({
     deleteButton,
     quitButton2,
 });
+
+// 修改记录
 std::vector<Component> updateLabeledInputs = {
     LabeledInput("ID号: ", "Necssary", borderEmpty),
     LabeledInput("类型: ", "Type", borderEmpty),
@@ -129,7 +132,8 @@ Component updateComponent = Container::Horizontal({
     quitButton3,
 });
 } // namespace
-int depth = 0;
+
+int front_window = 0;
 Component insertWindow = Renderer(insertComponent, [] {
   return vbox({
       window(text("添加记录"), vbox({

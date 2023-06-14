@@ -6,6 +6,7 @@
 #include <ftxui/screen/color.hpp>
 
 #include "tui/option/options.hpp"
+////外观选项
 using namespace ftxui;
 //-----Planing to use a separate file to save configuration-------
 Options::Options() : option{MenuOption::HorizontalAnimated()} {

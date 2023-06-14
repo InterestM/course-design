@@ -8,8 +8,9 @@
 
 #include "db/database.hpp"
 #include "tui/option/options.hpp"
-
+////设置&帮助
 namespace {
+// another ascii art of tank
 auto tank = vbox({
     text("⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⠟⢿⣿⣿"),
     text("⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⠀⠀⠀⠀⠀⣴⣶⠲⣶⢦⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⠶⠋⠁⢈⣷⠾⠟⠉"),
@@ -32,6 +33,7 @@ auto tank = vbox({
     text("⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠙⠉⠉⠉⠉⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"),
 });
 
+// 删除所有数据，需要二次确认
 bool modal_shown = false;
 auto show_modal = [] { modal_shown = true; };
 auto hide_modal = [] { modal_shown = false; };
@@ -44,7 +46,7 @@ Component ModalComponent(std::function<void()> clear_data,
                          std::function<void()> hide_modal) {
   auto component =
       Container::Horizontal({
-          Button("确定", clear_data, ButtonOption::Animated(Color::Red)),
+          Button("确定(危险)", clear_data, ButtonOption::Animated(Color::Red)),
           Button("退出", hide_modal, ButtonOption::Animated()),
       }) |
       center;
@@ -56,9 +58,9 @@ Component setting_main =
         Button("清除数据", [] { show_modal(); }),
     }) |
     Modal(ModalComponent(clear_data, hide_modal), &modal_shown);
+//
 } // namespace
 
-// Modify the way to render them on screen:
 auto settings = Renderer(setting_main, [] {
   return vbox({
       text("De Wapens Neder") | center | inverted,
@@ -68,6 +70,7 @@ auto settings = Renderer(setting_main, [] {
           setting_main->Render() | clear_under | center,
       }),
       separatorHeavy(),
+      // 帮助文字
       text("帮助") | center | bold,
       hbox({
           vbox({

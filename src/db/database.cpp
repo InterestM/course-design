@@ -8,10 +8,10 @@
 
 #include "data/record.hpp"
 #include "db/database.hpp"
-
+//// 数据库操作,use SQLite3
 SQLite::Database Database::db{"data.db3",
                               SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE};
-
+// 初始化数据库，不存在时创建数据库及表
 bool Database::Init() {
   try {
     SQLite::Transaction transaction(Database::db);
@@ -35,7 +35,7 @@ std::vector<Record> *Database::cache = nullptr;
 namespace {
 
 std::vector<std::string> cacheParams = {"", "", "", ""};
-
+// 执行查询语句，并将数据转换为std::vector<std::Record>,以转换为表
 std::vector<Record> Query2Records(SQLite::Statement &&query) {
   try {
     std::vector<Record> records;
@@ -54,6 +54,7 @@ std::vector<Record> Query2Records(SQLite::Statement &&query) {
 
 } // namespace
 
+// 更新查询语句
 void Database::UpdateCache() {
   if (cache != nullptr) {
     delete cache;
@@ -78,7 +79,7 @@ std::vector<Record> &Database::QueryRecord() {
   }
   return *Database::cache;
 }
-
+// 读取查询选项
 std::vector<Record> &Database::QueryRecord(const std::string &s_type,
                                            const std::string &s_spec,
                                            const std::string &s_ads,
@@ -91,7 +92,7 @@ std::vector<Record> &Database::QueryRecord(const std::string &s_type,
   }
   return *Database::cache;
 }
-
+// 插入记录
 void Database::InsertRecord(const Record &record) {
   SQLite::Transaction transaction(Database::db);
   SQLite::Statement query{
@@ -111,7 +112,7 @@ void Database::InsertRecord(const Record &record) {
   transaction.commit();
   Database::UpdateCache();
 }
-
+// 删除记录
 void Database::DeleteRecord(int id) {
   SQLite::Transaction transaction(Database::db);
   SQLite::Statement query{Database::db, "DELETE FROM data WHERE ID = ?;"};
@@ -120,7 +121,7 @@ void Database::DeleteRecord(int id) {
   transaction.commit();
   Database::UpdateCache();
 }
-
+// 编辑记录
 void Database::UpdateRecord(const Record &record) {
   SQLite::Transaction transaction(Database::db);
   SQLite::Statement rawQuery = {Database::db,
@@ -165,7 +166,7 @@ void Database::UpdateRecord(const Record &record) {
   transaction.commit();
   Database::UpdateCache();
 }
-
+// 查询某一类型下某一阵营的损失数量
 int Database::CalcSum(const std::string &targetType,
                       const std::string &targetADS) {
   try {
@@ -183,7 +184,7 @@ int Database::CalcSum(const std::string &targetType,
     return -1;
   }
 }
-
+// 查询装备的已有种类
 std::vector<std::string> Database::QueryType() {
   std::vector<std::string> types;
   try {
@@ -196,7 +197,7 @@ std::vector<std::string> Database::QueryType() {
   }
   return types;
 }
-
+// 清除所有数据
 bool Database::ClearRecord() {
   try {
     SQLite::Transaction transaction(Database::db);

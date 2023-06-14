@@ -10,8 +10,9 @@
 #include <ftxui/screen/color.hpp>
 
 using namespace ftxui;
-
+//// 主页面
 namespace {
+// ascii art of a tank
 auto tank = hbox({
     vbox({
         text("░░░░░░███████ ]▄▄▄▄▄▄▄▄▃"),
@@ -20,7 +21,7 @@ auto tank = hbox({
         text("◥⊙ ▲⊙ ▲⊙ ▲⊙ ▲⊙ ▲⊙ ▲⊙◤..."),
     }),
 });
-
+// 读取数据，绘制双方损失占比柱状图
 auto container = Container::Vertical({});
 void LoadLoss() {
   std::vector<std::string> types = Database::QueryType();

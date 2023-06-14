@@ -1,16 +1,12 @@
 #include "data/record.hpp"
-
+// Record类定义
 Record::Record(const int &id, const std::string &type,
                const std::string &specification, const std::string &adscription,
                const int &amount, const std::string &status,
                const std::string &source)
-    : id(id),
-      type(type),
-      specification(specification),
-      adscription(adscription),
-      amount(amount),
-      status(status),
-      source(source) {}
+    : id(id), type(type), specification(specification),
+      adscription(adscription), amount(amount), status(status), source(source) {
+}
 
 const int &Record::getId() const { return id; }
 const std::string &Record::getType() const { return type; }

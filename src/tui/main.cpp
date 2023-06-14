@@ -9,9 +9,11 @@
 #include <ftxui/dom/elements.hpp>
 
 int main(int argc, char *argv[]) {
+  // 初始化数据库
   Database::Init();
 
   using namespace ftxui;
+  // 设置为终端全屏
   auto screen = ScreenInteractive::Fullscreen();
 
   std::atomic<bool> refresh_ui_continue = true;
@@ -23,6 +25,7 @@ int main(int argc, char *argv[]) {
     }
   });
 
+  // 设置快捷键
   main_renderer |= CatchEvent([&](ftxui::Event event) {
     if (event == Event::F1) {
       tab_index = 0;

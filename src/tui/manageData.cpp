@@ -17,16 +17,10 @@
 #include <ftxui/screen/screen.hpp>
 
 using namespace ftxui;
-
+//// 数据浏览及管理
 namespace {
-// At depth=0, Data Browser
-std::vector<ftxui::Component> labeledInputs = {
-    LabeledInput(" 类型: ", "Type"),
-    LabeledInput(" 型号: ", "Specification"),
-    LabeledInput(" 归属: ", "Red/Blue"),
-    LabeledInput(" 状态: ", "Destoryed/Captured/Damaged"),
-};
-
+// At front_window=0, 数据浏览/查询
+//----读取数据并绘制为表
 static ftxui::Table GetTable() {
   std::vector<std::vector<std::string>> recordRows = {
       {"ID", "类型", "型号", "归属", "数量", "状态", "来源"}};
@@ -62,6 +56,13 @@ static ftxui::Table GetTable() {
 
   return table;
 };
+//---- 输入框及按钮
+std::vector<ftxui::Component> labeledInputs = {
+    LabeledInput(" 类型: ", "Type"),
+    LabeledInput(" 型号: ", "Specification"),
+    LabeledInput(" 归属: ", "Red/Blue"),
+    LabeledInput(" 状态: ", "Destoryed/Captured/Damaged"),
+};
 auto queryButton = Button(
     "查询",
     [] {
@@ -76,20 +77,20 @@ auto queryButton = Button(
               ->GetInput());
     },
     ButtonOption::Ascii());
-
+//---- 打开编辑窗口按钮
 auto button_open_insert = Button(
-    "新增记录", [] { depth = 1; }, ButtonOption::Ascii());
+    "新增记录", [] { front_window = 1; }, ButtonOption::Ascii());
 auto button_open_delete = Button(
-    "删除记录", [] { depth = 2; }, ButtonOption::Ascii());
+    "删除记录", [] { front_window = 2; }, ButtonOption::Ascii());
 auto button_open_update = Button(
-    "编辑记录", [] { depth = 3; }, ButtonOption::Ascii());
-
+    "编辑记录", [] { front_window = 3; }, ButtonOption::Ascii());
+//----
 auto labeledInputsComponent = Container::Horizontal(labeledInputs);
 auto queryComponent = Container::Horizontal(
     {button_open_insert, button_open_delete, button_open_update,
      labeledInputsComponent, queryButton});
 
-Component depth_0_renderer = Renderer(queryComponent, [] {
+Component front_window_0_renderer = Renderer(queryComponent, [] {
   return vbox({
              hbox({
                  window(text("条件"), hbox({
@@ -112,30 +113,31 @@ Component depth_0_renderer = Renderer(queryComponent, [] {
          vscroll_indicator | frame | size(HEIGHT, LESS_THAN, 60) | hcenter;
 });
 
-// At depth=1, open insertWindow(see in edit.cpp)
-// At depth=2,open deleteWindow(see in edit.cpp)
+// At front_window=1,insertWindow(see in edit.cpp)
+// At front_window=2,deleteWindow(see in edit.cpp)
 
-// contain depth 0&1
+//
 auto main_container = Container::Tab(
-    {depth_0_renderer, insertWindow, deleteWindow, updateWindow}, &depth);
+    {front_window_0_renderer, insertWindow, deleteWindow, updateWindow},
+    &front_window);
 } // namespace
 
 Component dataManager = Renderer(main_container, [] {
-  Element document = depth_0_renderer->Render();
+  Element document = front_window_0_renderer->Render();
 
-  if (depth == 1) {
+  if (front_window == 1) {
     document = dbox({
         document,
         insertWindow->Render() | bgcolor(Color::Black) | clear_under | center,
     });
   }
-  if (depth == 2) {
+  if (front_window == 2) {
     document = dbox({
         document,
         deleteWindow->Render() | bgcolor(Color::Black) | clear_under | center,
     });
   }
-  if (depth == 3) {
+  if (front_window == 3) {
     document = dbox({
         document,
         updateWindow->Render() | bgcolor(Color::Black) | clear_under | center,
