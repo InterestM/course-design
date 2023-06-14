@@ -88,8 +88,7 @@ Component deleteComponenet = Container::Horizontal({
 });
 
 } // namespace
-int depth = 0; // There are two layers. One at depth = 0 and the modal
-               // window at depth = 1;
+int depth = 0;
 Component insertWindow = Renderer(insertComponent, [] {
   return vbox({
       window(text("添加记录"), vbox({

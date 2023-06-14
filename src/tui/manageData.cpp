@@ -100,7 +100,8 @@ Component depth_0_renderer = Renderer(queryComponent, [] {
          vscroll_indicator | frame | size(HEIGHT, LESS_THAN, 60) | hcenter;
 });
 
-// At depth=1, DataEdit modals need
+// At depth=1, open insertWindow(see at edit.cpp)
+// At depth=2,open deleteWindow(see at edit.cpp)
 
 // contain depth 0&1
 auto main_container =
