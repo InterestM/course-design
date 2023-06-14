@@ -15,7 +15,7 @@ void Hotkey(Event event){};
 std::vector<std::string> tab_entries = {
     "主界面",
     "数据",
-    "设置",
+    "设置&帮助",
 };
 auto tab_selection =
     Menu(&tab_entries, &tab_index, Options::GetInstance().GetOption());

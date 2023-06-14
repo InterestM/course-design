@@ -77,6 +77,7 @@ auto settings = Renderer(setting_main, [] {
               text("------数据      F2"),
               text("------设置&帮助 F3"),
               text("------退出      Esc"),
+              text("------顺序切换  Tab"),
           }) | border,
       }) | center,
   });
