@@ -26,7 +26,7 @@ FetchContent_MakeAvailable(SQLiteCpp)
 # ------------------------------------------------------------------------------
 
 
-project(hello_world)
+project(osint)
 
 # set(SRC_LIST src/tui/option/options.cpp src/tui/main.cpp src/tui/homescreen.cpp src/data/operate.cpp)
 aux_source_directory(src/tui SRC_TUI_LIST)
