@@ -5,21 +5,21 @@
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/dom/node.hpp>
 
-class LabeledInputBase : public ftxui::ComponentBase {
- public:
-  const std::string& GetInput() const;
+class LabeledInputBase : public ftxui::ComponentBase { // 组合一个文本框和输入框
+public:
+  const std::string &GetInput() const;
   ftxui::Element Render() override;
-  LabeledInputBase(const std::string& label, const std::string& placeholder,
+  LabeledInputBase(const std::string &label, const std::string &placeholder,
                    ftxui::Decorator decorator);
 
- private:
+private:
   std::string label;
   std::string input;
   ftxui::Decorator decorator;
 };
 
-ftxui::Component LabeledInput(const std::string& label,
-                              const std::string& placeholder,
+ftxui::Component LabeledInput(const std::string &label,
+                              const std::string &placeholder,
                               ftxui::Decorator decorator = ftxui::nothing);
 
 #endif

@@ -4,21 +4,21 @@
 #include <string>
 
 class Record {
- public:
+public:
   Record(const int &id, const std::string &type,
          const std::string &specification, const std::string &adscription,
          const int &amount, const std::string &status,
          const std::string &source);
 
-  const int &getId() const;
-  const std::string &getType() const;
-  const std::string &getSpecification() const;
-  const std::string &getAdscription() const;
-  const int &getAmount() const;
-  const std::string &getStatus() const;
-  const std::string &getSource() const;
+  const int &getId() const;                    // 获取id
+  const std::string &getType() const;          //     type
+  const std::string &getSpecification() const; //     specification
+  const std::string &getAdscription() const;   //     adscription
+  const int &getAmount() const;                //     amount
+  const std::string &getStatus() const;        //     status
+  const std::string &getSource() const;        //     source
 
- private:
+private:
   const int id;
   const std::string type;
   const std::string specification;
