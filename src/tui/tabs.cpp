@@ -35,9 +35,29 @@ auto main_container = Container::Vertical({
 
 } // namespace
 
-auto main_renderer = Renderer(main_container, [] {
-  return vbox({
-      text("武装冲突装备损失开源信息管理系统") | bold | hcenter,
-      main_container->Render(),
-  });
-});
+auto main_renderer =
+    Renderer(main_container,
+             [] {
+               return vbox({
+                   text("武装冲突装备损失开源信息管理系统") | bold | hcenter,
+                   main_container->Render(),
+               });
+             }) |
+    CatchEvent([](ftxui::Event event) {
+      if (event == Event::F1) {
+        tab_index = 0;
+        return true;
+      };
+      if (event == Event::F2) {
+        tab_index = 1;
+        return true;
+      }
+      if (event == Event::F3) {
+        tab_index = 2;
+        return true;
+      }
+      if (event == Event::Escape) {
+        exit(0);
+      }
+      return false;
+    });
