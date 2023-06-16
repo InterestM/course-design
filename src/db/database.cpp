@@ -216,4 +216,5 @@ bool Database::ClearRecord() {
   } catch (std::exception &e) {
     return false;
   }
+  Database::UpdateCache();
 }

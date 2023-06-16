@@ -102,7 +102,7 @@ Component updateLabeledInputsComponent =
     Container::Vertical(updateLabeledInputs);
 
 Component updateButton = Button(
-    "插入",
+    "变更",
     [] {
       static std::string inserts[7];
       std::transform(updateLabeledInputs.begin(), updateLabeledInputs.end(),
@@ -116,7 +116,7 @@ Component updateButton = Button(
             inserts[1],
             inserts[2],
             inserts[3],
-            std::stoi(inserts[4]),
+            inserts[4].size() > 0 ? std::stoi(inserts[4]) : 0,
             inserts[5],
             inserts[6],
         });

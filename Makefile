@@ -1,5 +1,5 @@
 WS_ROOT := .
-TARGET := hello_world
+TARGET := osint
 CONFIG := Release
 
 ifeq ($(OS),Windows_NT)
