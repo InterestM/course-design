@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  TARGET: hello_world
+  TARGET: osint
   CONFIG: Release
 
 jobs:
